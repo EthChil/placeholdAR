@@ -43,6 +43,7 @@ import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
+import com.google.ar.sceneform.ux.ScaleController;
 import com.google.ar.sceneform.ux.TransformableNode;
 
 /**
@@ -72,23 +73,6 @@ public class HelloSceneformActivity extends AppCompatActivity {
     setContentView(R.layout.activity_ux);
     arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
 
-    ViewRenderable.builder()
-              .setView(arFragment.getContext(), R.layout.test_view)
-              .build()
-              .thenAccept(
-                      (renderable) -> {
-                          imgRenderable = renderable;
-
-//                          // Change the rotation
-//                          if (plane.getType() ==  Plane.Type.VERTICAL) {
-//                              float[] yAxis = plane.getCenterPose().getYAxis();
-//                              Vector3 planeNormal = new Vector3(yAxis[0], yAxis[1], yAxis[2]);
-//                              Quaternion upQuat = Quaternion.lookRotation(planeNormal, Vector3.up());
-//                              img.setWorldRotation(upQuat);
-//                          }
-                      });
-
-//
 
 //      ModelRenderable.builder()
 //        .setSource(this, R.raw.untitled)
@@ -103,7 +87,23 @@ public class HelloSceneformActivity extends AppCompatActivity {
 //              return null;
 //            });
 
-    arFragment.setOnTapArPlaneListener(
+        ViewRenderable.builder()
+                .setView(arFragment.getContext(), R.layout.test_view)
+                .build()
+                .thenAccept(
+                        (renderable) -> {
+                            imgRenderable = renderable;
+
+//                          // Change the rotation
+//                          if (plane.getType() ==  Plane.Type.VERTICAL) {
+//                              float[] yAxis = plane.getCenterPose().getYAxis();
+//                              Vector3 planeNormal = new Vector3(yAxis[0], yAxis[1], yAxis[2]);
+//                              Quaternion upQuat = Quaternion.lookRotation(planeNormal, Vector3.up());
+//                              img.setWorldRotation(upQuat);
+//                          }
+                        });
+
+        arFragment.setOnTapArPlaneListener(
         (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
           if (imgRenderable == null) {
             return;
@@ -117,13 +117,27 @@ public class HelloSceneformActivity extends AppCompatActivity {
           // Create the transformable andy and add it to the anchor.
           TransformableNode img = new TransformableNode(arFragment.getTransformationSystem());
 
-            img.getScaleController().setMinScale(0.01f);
-            img.getScaleController().setMaxScale(2.0f);
-
-            // Set the local scale of the node BEFORE setting its parent
-            img.setLocalScale(new Vector3(0.5f, 0.5f, 0.5f));
+          img.getScaleController().setMinScale(0.01f);
+          img.getScaleController().setMaxScale(2.0f);
+          img.setLocalScale(new Vector3(2f, 2f, 2f));
           img.setParent(anchorNode);
           img.setRenderable(imgRenderable);
+
+          ViewRenderable.builder()
+                    .setView(arFragment.getContext(), R.layout.test_view)
+                    .build()
+                    .thenAccept(
+                            (renderable) -> {
+                                imgRenderable = renderable;
+
+                          // Change the rotation
+                          if (plane.getType() ==  Plane.Type.VERTICAL) {
+                              float[] yAxis = plane.getCenterPose().getYAxis();
+                              Vector3 planeNormal = new Vector3(yAxis[0], yAxis[1], yAxis[2]);
+                              Quaternion upQuat = Quaternion.lookRotation(planeNormal, Vector3.up());
+                              img.setWorldRotation(upQuat);
+                          }
+                            });
 
           img.select();
         });
