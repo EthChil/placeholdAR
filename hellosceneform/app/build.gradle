@@ -79,8 +79,13 @@ sceneform.asset('sampledata/models/andy.obj',
         'src/main/res/raw/andy')
 
 
-
 sceneform.asset('sampledata/models/phone.obj',
         'default',
         'sampledata/models/phone.sfa',
         'src/main/assets/phone')
+
+
+sceneform.asset('sampledata/models/untitled.obj',
+        'default',
+        'sampledata/models/untitled.sfa',
+        'src/main/assets/untitled')
