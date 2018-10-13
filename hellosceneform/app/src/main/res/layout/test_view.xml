@@ -5,4 +5,4 @@
     android:layout_width="123dp"
     android:layout_height="197dp"
     android:src="@drawable/shoes"
-    tools:srcCompat="@tools:sample/backgrounds/scenic[0]" />
+    tools:srcCompat="@tools:sample/backgrounds/scenic[3]" />

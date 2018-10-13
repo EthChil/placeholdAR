@@ -29,6 +29,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.google.ar.core.Anchor;
+import com.google.ar.core.Config;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
 import com.google.ar.sceneform.AnchorNode;
@@ -49,6 +50,8 @@ public class HelloSceneformActivity extends AppCompatActivity {
   private ModelRenderable andyRenderable;
   private ViewRenderable imgRenderable;
 
+  public static final Config.PlaneFindingMode.VERTICAL;
+
 
     @Override
   @SuppressWarnings({"AndroidApiChecker", "FutureReturnValueIgnored"})
@@ -56,6 +59,8 @@ public class HelloSceneformActivity extends AppCompatActivity {
   // FutureReturnValueIgnored is not valid
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+
 
     if (!checkIsSupportedDeviceOrFinish(this)) {
       return;
