@@ -3,6 +3,5 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/imageCard"
     android:layout_width="123dp"
-    android:layout_height="197dp"
-    android:src="@drawable/supremetrans"
-    tools:srcCompat="@tools:sample/backgrounds/scenic" />
+    android:layout_height="90dp"
+    android:src="@drawable/supremetrans" />

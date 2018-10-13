@@ -18,6 +18,7 @@ package com.google.ar.sceneform.samples.hellosceneform;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.opengl.Matrix;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -45,6 +46,7 @@ import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.ScaleController;
 import com.google.ar.sceneform.ux.TransformableNode;
+import com.google.ar.sceneform.ux.TranslationController;
 
 /**
  * This is an example activity that uses the Sceneform UX package to make common AR tasks easier.
@@ -56,7 +58,6 @@ public class HelloSceneformActivity extends AppCompatActivity {
   private ModelRenderable andyRenderable;
   private ViewRenderable imgRenderable;
   private Session session;
-  private Plane plane;
 
     @Override
   @SuppressWarnings({"AndroidApiChecker", "FutureReturnValueIgnored"})
@@ -116,7 +117,6 @@ public class HelloSceneformActivity extends AppCompatActivity {
 
           // Create the transformable andy and add it to the anchor.
           TransformableNode img = new TransformableNode(arFragment.getTransformationSystem());
-
           img.getScaleController().setMinScale(0.01f);
           img.getScaleController().setMaxScale(2.0f);
           img.setLocalScale(new Vector3(2f, 2f, 2f));
@@ -136,6 +136,8 @@ public class HelloSceneformActivity extends AppCompatActivity {
                               Vector3 planeNormal = new Vector3(yAxis[0], yAxis[1], yAxis[2]);
                               Quaternion upQuat = Quaternion.lookRotation(planeNormal, Vector3.up());
                               img.setWorldRotation(upQuat);
+
+//                              Matrix.translateM(arFragment, 0, 1, 0f, 1);
                           }
                             });
 
