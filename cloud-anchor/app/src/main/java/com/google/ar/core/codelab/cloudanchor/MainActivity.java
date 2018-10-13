@@ -105,9 +105,6 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
   @GuardedBy("singleTapAnchorLock")
   private AppAnchorState appAnchorState = AppAnchorState.NONE;
 
-  //Storage manager
-  private final StorageManager storageManager = new StorageManager();
-
   @Nullable
   @GuardedBy("singleTapAnchorLock")
   private Anchor anchor;
@@ -156,14 +153,20 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
 
   private void onResolveOkPressed(String dialogValue) {
     int shortCode = Integer.parseInt(dialogValue);
-    String cloudAnchorId = storageManager.getCloudAnchorID(this, shortCode);
-    synchronized (singleTapAnchorLock) {
-      Anchor resolvedAnchor = session.resolveCloudAnchor(cloudAnchorId);
-      setNewAnchor(resolvedAnchor);
-      snackbarHelper.showMessage(this, "Now resolving anchor...");
-      appAnchorState = AppAnchorState.RESOLVING;
-    }
+    storageManager.getCloudAnchorID(
+      shortCode,
+      (cloudAnchorId) -> {
+        synchronized (singleTapAnchorLock) {
+          Anchor resolvedAnchor = session.resolveCloudAnchor(cloudAnchorId);
+          setNewAnchor(resolvedAnchor);
+          snackbarHelper.showMessage(this, "Now resolving anchor...");
+          appAnchorState = AppAnchorState.RESOLVING;
+        }
+      });
   }
+
+  //Storage manager
+  private StorageManager storageManager;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -174,22 +177,22 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
 
     // Set up tap listener.
     gestureDetector =
-        new GestureDetector(
-            this,
-            new GestureDetector.SimpleOnGestureListener() {
-              @Override
-              public boolean onSingleTapUp(MotionEvent e) {
-                synchronized (singleTapAnchorLock) {
-                  queuedSingleTap = e;
-                }
-                return true;
-              }
+      new GestureDetector(
+        this,
+        new GestureDetector.SimpleOnGestureListener() {
+          @Override
+          public boolean onSingleTapUp(MotionEvent e) {
+            synchronized (singleTapAnchorLock) {
+              queuedSingleTap = e;
+            }
+            return true;
+          }
 
-              @Override
-              public boolean onDown(MotionEvent e) {
-                return true;
-              }
-            });
+          @Override
+          public boolean onDown(MotionEvent e) {
+            return true;
+          }
+        });
     surfaceView.setOnTouchListener((unusedView, event) -> gestureDetector.onTouchEvent(event));
 
     // Set up renderer.
@@ -203,25 +206,26 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
     // Initialize the "Clear" button. Clicking it will clear the current anchor, if it exists.
     Button clearButton = findViewById(R.id.clear_button);
     clearButton.setOnClickListener(
-        (unusedView) -> {
-          synchronized (singleTapAnchorLock) {
-            setNewAnchor(null);
-          }
-        });
+      (unusedView) -> {
+        synchronized (singleTapAnchorLock) {
+          setNewAnchor(null);
+        }
+      });
 
     Button resolveButton = findViewById(R.id.resolve_button);
     resolveButton.setOnClickListener(
-        (unusedView) -> {
-          synchronized (singleTapAnchorLock) {
-            if (anchor != null) {
-              snackbarHelper.showMessageWithDismiss(this, "Please clear anchor first.");
-              return;
-            }
+      (unusedView) -> {
+        synchronized (singleTapAnchorLock) {
+          if (anchor != null) {
+            snackbarHelper.showMessageWithDismiss(this, "Please clear anchor first.");
+            return;
           }
-          ResolveDialogFragment dialog = new ResolveDialogFragment();
-          dialog.setOkListener(this::onResolveOkPressed);
-          dialog.show(getSupportFragmentManager(), "Resolve");
-        });
+        }
+        ResolveDialogFragment dialog = new ResolveDialogFragment();
+        dialog.setOkListener(this::onResolveOkPressed);
+        dialog.show(getSupportFragmentManager(), "Resolve");
+      });
+    storageManager = new StorageManager(this); // Add this line.
   }
 
   @Override
@@ -360,10 +364,18 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
           snackbarHelper.showMessageWithDismiss(this, "Error hosting anchor: " + cloudState);
           appAnchorState = AppAnchorState.NONE;
         } else if (cloudState == Anchor.CloudAnchorState.SUCCESS) {
-          int shortCode = storageManager.nextShortCode(this);
-          storageManager.storeUsingShortCode(this, shortCode, anchor.getCloudAnchorId());
-          snackbarHelper.showMessageWithDismiss(
-                  this, "Anchor hosted successfully! Cloud Short Code: " + shortCode);
+          storageManager.nextShortCode(
+                  (shortCode) -> {
+                    if (shortCode == null) {
+                      snackbarHelper.showMessageWithDismiss(this, "Could not obtain a short code.");
+                      return;
+                    }
+                    synchronized (singleTapAnchorLock) {
+                      storageManager.storeUsingShortCode(shortCode, anchor.getCloudAnchorId());
+                      snackbarHelper.showMessageWithDismiss(
+                              this, "Anchor hosted successfully! Cloud Short Code: " + shortCode);
+                    }
+                  });
           appAnchorState = AppAnchorState.HOSTED;
         }
       } else if (appAnchorState == AppAnchorState.RESOLVING) {
