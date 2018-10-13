@@ -27,6 +27,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.google.ar.core.Anchor;
@@ -47,6 +48,8 @@ import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.ScaleController;
 import com.google.ar.sceneform.ux.TransformableNode;
 import com.google.ar.sceneform.ux.TranslationController;
+
+import com.squareup.picasso.Picasso;
 
 /**
  * This is an example activity that uses the Sceneform UX package to make common AR tasks easier.
@@ -124,25 +127,39 @@ public class HelloSceneformActivity extends AppCompatActivity {
           img.setRenderable(imgRenderable);
 
           ViewRenderable.builder()
-                    .setView(arFragment.getContext(), R.layout.test_view)
-                    .build()
-                    .thenAccept(
-                            (renderable) -> {
-                                imgRenderable = renderable;
+            .setView(arFragment.getContext(), R.layout.test_view)
+            .build()
+            .thenAccept(
+                (renderable) -> {
+                    imgRenderable = renderable;
 
-                          // Change the rotation
-                          if (plane.getType() ==  Plane.Type.VERTICAL) {
-                              float[] yAxis = plane.getCenterPose().getYAxis();
-                              Vector3 planeNormal = new Vector3(yAxis[0], yAxis[1], yAxis[2]);
-                              Quaternion upQuat = Quaternion.lookRotation(planeNormal, Vector3.up());
-                              img.setWorldRotation(upQuat);
+              // Change the rotation
+              if (plane.getType() ==  Plane.Type.VERTICAL) {
+                  float[] yAxis = plane.getCenterPose().getYAxis();
+                  Vector3 planeNormal = new Vector3(yAxis[0], yAxis[1], yAxis[2]);
+                  Quaternion upQuat = Quaternion.lookRotation(planeNormal, Vector3.up());
+                  img.setWorldRotation(upQuat);
 
 //                              Matrix.translateM(arFragment, 0, 1, 0f, 1);
-                          }
-                            });
+              }
+                });
 
           img.select();
         });
+        ImageView middleImg = findViewById(R.id.middle_img);
+        Picasso.get().load("https://icon2.kisspng.com/20171221/fsq/cat-5a3c42efbe6bf2.68329414151389873578.jpg").into(middleImg);
+        // Initialize the "left" button.
+        Button leftButton = findViewById(R.id.left_button);
+        leftButton.setOnClickListener(
+                (unusedView) -> {
+                    Picasso.get().load("https://cdn4.iconfinder.com/data/icons/defaulticon/icons/png/256x256/arrow-alt-left.png").into(middleImg);
+                });
+        // Initialize the "right" button.
+        Button rightButton = findViewById(R.id.right_button);
+        rightButton.setOnClickListener(
+                (unusedView) -> {
+                    Picasso.get().load("https://png.icons8.com/windows/1600/long-arrow-right.png").into(middleImg);
+                });
   }
 
     @Override

@@ -16,4 +16,6 @@
 -->
 <resources>
     <string name="app_name">Hello AR</string>
+    <string name="left_button_string">&lt;</string>
+    <string name="right_button_string">></string>
 </resources>
