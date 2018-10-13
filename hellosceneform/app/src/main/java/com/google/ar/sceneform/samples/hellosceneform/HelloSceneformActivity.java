@@ -40,6 +40,7 @@ import com.google.ar.core.exceptions.UnavailableApkTooOldException;
 import com.google.ar.core.exceptions.UnavailableArcoreNotInstalledException;
 import com.google.ar.core.exceptions.UnavailableSdkTooOldException;
 import com.google.ar.sceneform.AnchorNode;
+import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.math.Quaternion;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ModelRenderable;
@@ -51,6 +52,9 @@ import com.google.ar.sceneform.ux.TranslationController;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This is an example activity that uses the Sceneform UX package to make common AR tasks easier.
  */
@@ -61,6 +65,18 @@ public class HelloSceneformActivity extends AppCompatActivity {
   private ModelRenderable andyRenderable;
   private ViewRenderable imgRenderable;
   private Session session;
+
+    private void onClear() {
+        List<Node> children = new ArrayList<>(arFragment.getArSceneView().getScene().getChildren());
+        for (Node node : children) {
+            if (node instanceof AnchorNode) {
+                if (((AnchorNode) node).getAnchor() != null) {
+                    ((AnchorNode) node).getAnchor().detach();
+                }
+            }
+
+        }
+    }
 
     @Override
   @SuppressWarnings({"AndroidApiChecker", "FutureReturnValueIgnored"})
@@ -112,7 +128,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
           if (imgRenderable == null) {
             return;
           }
-
+          onClear();
           // Create the Anchor.
           Anchor anchor = hitResult.createAnchor();
           AnchorNode anchorNode = new AnchorNode(anchor);
