@@ -29,8 +29,14 @@ import android.view.MotionEvent;
 import android.widget.Toast;
 
 import com.google.ar.core.Anchor;
+import com.google.ar.core.Config;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
+import com.google.ar.core.Session;
+import com.google.ar.core.exceptions.CameraNotAvailableException;
+import com.google.ar.core.exceptions.UnavailableApkTooOldException;
+import com.google.ar.core.exceptions.UnavailableArcoreNotInstalledException;
+import com.google.ar.core.exceptions.UnavailableSdkTooOldException;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.assets.RenderableSource;
 import com.google.ar.sceneform.rendering.ModelRenderable;
@@ -60,6 +66,8 @@ public class HelloSceneformActivity extends AppCompatActivity {
     private ArFragment arFragment;
     private ModelRenderable modelRenderable;
     private ModelRenderable cubeRenderable;
+
+    private Session session;
 
     /**
      * Returns false and displays an error message if Sceneform can not run, true if Sceneform can run
@@ -135,6 +143,8 @@ public class HelloSceneformActivity extends AppCompatActivity {
                     // Step 3: Build the Scene
                     // Create the Anchor.
                     Anchor anchor = hitResult.createAnchor();
+                    session.hostCloudAnchor(anchor);
+                    // You can get the id and put it in firebase
                     AnchorNode anchorNode = new AnchorNode(anchor);
                     anchorNode.setParent(arFragment.getArSceneView().getScene());
 
@@ -153,6 +163,37 @@ public class HelloSceneformActivity extends AppCompatActivity {
                     // This is not required for other models
                     modelRenderable.setMaterial(modelRenderable.getSubmeshCount() - 1, cubeRenderable.getMaterial());
                 });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (session == null) {
+            try {
+                session = new Session(this);
+                Config config = new Config(session);
+                config.setCloudAnchorMode(Config.CloudAnchorMode.ENABLED);
+                session.configure(config);
+            } catch (UnavailableArcoreNotInstalledException | UnavailableApkTooOldException | UnavailableSdkTooOldException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            session.resume();
+        } catch (CameraNotAvailableException e) {
+            session = null;
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (session != null) {
+            session.pause();
+        }
     }
 
     // Step 2: Get 3D assets and create a renderable
