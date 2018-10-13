@@ -4,5 +4,5 @@
     android:id="@+id/imageCard"
     android:layout_width="123dp"
     android:layout_height="197dp"
-    android:src="@drawable/shoes"
-    tools:srcCompat="@tools:sample/backgrounds/scenic[0]" />
+    android:src="@drawable/niketrans"
+    tools:srcCompat="@tools:sample/backgrounds/scenic" />

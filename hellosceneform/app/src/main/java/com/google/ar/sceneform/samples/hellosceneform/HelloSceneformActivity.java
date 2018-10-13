@@ -104,7 +104,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
             img.getScaleController().setMaxScale(2.0f);
 
             // Set the local scale of the node BEFORE setting its parent
-            img.setLocalScale(new Vector3(1f, 1f, 1f));
+            img.setLocalScale(new Vector3(0.5f, 0.5f, 0.5f));
           img.setParent(anchorNode);
           img.setRenderable(imgRenderable);
 
