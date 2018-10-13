@@ -25,6 +25,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 import com.google.ar.core.Anchor;
 import com.google.ar.core.HitResult;
@@ -32,6 +34,7 @@ import com.google.ar.core.Plane;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ModelRenderable;
+import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
@@ -61,18 +64,26 @@ public class HelloSceneformActivity extends AppCompatActivity {
 
     // When you build a Renderable, Sceneform loads its resources in the background while returning
     // a CompletableFuture. Call thenAccept(), handle(), or check isDone() before calling get().
-    ModelRenderable.builder()
-        .setSource(this, R.raw.phone)
-        .build()
-        .thenAccept(renderable -> andyRenderable = renderable)
-        .exceptionally(
-            throwable -> {
-              Toast toast =
-                  Toast.makeText(this, "Unable to load andy renderable", Toast.LENGTH_LONG);
-              toast.setGravity(Gravity.CENTER, 0, 0);
-              toast.show();
-              return null;
-            });
+      ViewRenderable.builder()
+              .setView(arFragment.getContext(), R.layout.test_view)
+              .build()
+              .thenAccept(renderable -> {
+                  ImageView imgView = (ImageView)renderable.getView();
+              });
+
+
+//      ModelRenderable.builder()
+//        .setSource(this, R.raw.phone)
+//        .build()
+//        .thenAccept(renderable -> andyRenderable = renderable)
+//        .exceptionally(
+//            throwable -> {
+//              Toast toast =
+//                  Toast.makeText(this, "Unable to load andy renderable", Toast.LENGTH_LONG);
+//              toast.setGravity(Gravity.CENTER, 0, 0);
+//              toast.show();
+//              return null;
+//            });
 
     arFragment.setOnTapArPlaneListener(
         (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
@@ -93,7 +104,6 @@ public class HelloSceneformActivity extends AppCompatActivity {
 
             // Set the local scale of the node BEFORE setting its parent
             andy.setLocalScale(new Vector3(0.02f, 0.02f, 0.02f));
-            andy.get
           andy.setParent(anchorNode);
           andy.setRenderable(andyRenderable);
 
