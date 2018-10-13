@@ -64,26 +64,26 @@ public class HelloSceneformActivity extends AppCompatActivity {
 
     // When you build a Renderable, Sceneform loads its resources in the background while returning
     // a CompletableFuture. Call thenAccept(), handle(), or check isDone() before calling get().
-      ViewRenderable.builder()
-              .setView(arFragment.getContext(), R.layout.test_view)
-              .build()
-              .thenAccept(renderable -> {
-                  ImageView imgView = (ImageView)renderable.getView();
-              });
+//      ViewRenderable.builder()
+//              .setView(arFragment.getContext(), R.layout.test_view)
+//              .build()
+//              .thenAccept(renderable -> {
+//                  ImageView imgView = (ImageView)renderable.getView();
+//              });
 
 
-//      ModelRenderable.builder()
-//        .setSource(this, R.raw.phone)
-//        .build()
-//        .thenAccept(renderable -> andyRenderable = renderable)
-//        .exceptionally(
-//            throwable -> {
-//              Toast toast =
-//                  Toast.makeText(this, "Unable to load andy renderable", Toast.LENGTH_LONG);
-//              toast.setGravity(Gravity.CENTER, 0, 0);
-//              toast.show();
-//              return null;
-//            });
+      ModelRenderable.builder()
+        .setSource(this, R.raw.untitled)
+        .build()
+        .thenAccept(renderable -> andyRenderable = renderable)
+        .exceptionally(
+            throwable -> {
+              Toast toast =
+                  Toast.makeText(this, "Unable to load andy renderable", Toast.LENGTH_LONG);
+              toast.setGravity(Gravity.CENTER, 0, 0);
+              toast.show();
+              return null;
+            });
 
     arFragment.setOnTapArPlaneListener(
         (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
