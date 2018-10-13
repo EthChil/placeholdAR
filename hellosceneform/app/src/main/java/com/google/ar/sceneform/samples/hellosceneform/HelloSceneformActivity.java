@@ -29,9 +29,16 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.google.ar.core.Anchor;
+import com.google.ar.core.Config;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
+import com.google.ar.core.Session;
+import com.google.ar.core.exceptions.CameraNotAvailableException;
+import com.google.ar.core.exceptions.UnavailableApkTooOldException;
+import com.google.ar.core.exceptions.UnavailableArcoreNotInstalledException;
+import com.google.ar.core.exceptions.UnavailableSdkTooOldException;
 import com.google.ar.sceneform.AnchorNode;
+import com.google.ar.sceneform.math.Quaternion;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.rendering.ViewRenderable;
@@ -44,11 +51,11 @@ import com.google.ar.sceneform.ux.TransformableNode;
 public class HelloSceneformActivity extends AppCompatActivity {
   private static final String TAG = HelloSceneformActivity.class.getSimpleName();
   private static final double MIN_OPENGL_VERSION = 3.0;
-
   private ArFragment arFragment;
   private ModelRenderable andyRenderable;
   private ViewRenderable imgRenderable;
-
+  private Session session;
+  private Plane plane;
 
     @Override
   @SuppressWarnings({"AndroidApiChecker", "FutureReturnValueIgnored"})
@@ -61,17 +68,27 @@ public class HelloSceneformActivity extends AppCompatActivity {
       return;
     }
 
+
     setContentView(R.layout.activity_ux);
     arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
 
-    // When you build a Renderable, Sceneform loads its resources in the background while returning
-    // a CompletableFuture. Call thenAccept(), handle(), or check isDone() before calling get().
-
-      ViewRenderable.builder()
+    ViewRenderable.builder()
               .setView(arFragment.getContext(), R.layout.test_view)
               .build()
-              .thenAccept(renderable -> imgRenderable = renderable);
+              .thenAccept(
+                      (renderable) -> {
+                          imgRenderable = renderable;
 
+//                          // Change the rotation
+//                          if (plane.getType() ==  Plane.Type.VERTICAL) {
+//                              float[] yAxis = plane.getCenterPose().getYAxis();
+//                              Vector3 planeNormal = new Vector3(yAxis[0], yAxis[1], yAxis[2]);
+//                              Quaternion upQuat = Quaternion.lookRotation(planeNormal, Vector3.up());
+//                              img.setWorldRotation(upQuat);
+//                          }
+                      });
+
+//
 
 //      ModelRenderable.builder()
 //        .setSource(this, R.raw.untitled)
@@ -112,7 +129,27 @@ public class HelloSceneformActivity extends AppCompatActivity {
         });
   }
 
-  /**
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (session == null) try {
+            session = new Session(this);
+            Config config = new Config(session);
+            config.setPlaneFindingMode(Config.PlaneFindingMode.HORIZONTAL_AND_VERTICAL);
+            session.configure(config);
+        } catch (UnavailableArcoreNotInstalledException | UnavailableApkTooOldException | UnavailableSdkTooOldException e) {
+            e.printStackTrace();
+        }
+        try {
+            session.resume();
+        } catch (CameraNotAvailableException e) {
+            session = null;
+            e.printStackTrace();
+        }
+    }
+
+    /**
    * Returns false and displays an error message if Sceneform can not run, true if Sceneform can run
    * on this device.
    *
