@@ -59,8 +59,8 @@ public class HelloSceneformActivity extends AppCompatActivity {
     private static final String TAG = HelloSceneformActivity.class.getSimpleName();
     private static final double MIN_OPENGL_VERSION = 3.0;
 
-    private static final String EMAIL = "Your-email-here";
-    private static final String API_KEY = "Your-api-key-here";
+    private static final String EMAIL = "ethanchilderhose@gmail.com";
+    private static final String API_KEY = "5bc16e8b0607a";
 
 
     private ArFragment arFragment;

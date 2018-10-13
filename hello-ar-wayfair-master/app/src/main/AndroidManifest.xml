@@ -36,6 +36,11 @@
             application only being visible in the Google Play Store on devices that support
             ARCore. -->
         <meta-data android:name="com.google.ar.core" android:value="required" />
+        <!-- Api key -->
+        <meta-data
+            android:name="com.google.android.ar.API_KEY"
+            android:value="AIzaSyBHIfg29iY4mnd1n2OcnEZuwWmofSMkOo0"/>
+
 
         <activity
             android:name="com.google.ar.sceneform.samples.helloar.HelloSceneformActivity"
