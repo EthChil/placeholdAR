@@ -64,6 +64,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
 
     // When you build a Renderable, Sceneform loads its resources in the background while returning
     // a CompletableFuture. Call thenAccept(), handle(), or check isDone() before calling get().
+
 //      ViewRenderable.builder()
 //              .setView(arFragment.getContext(), R.layout.test_view)
 //              .build()
