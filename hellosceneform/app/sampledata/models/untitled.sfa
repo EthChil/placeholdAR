@@ -66,9 +66,9 @@
   },
   samplers: [
     {
-      file: '/Users/Kratos/Desktop/YACHTCLUB/img01.jpg',
+      file: 'sampledata/models/img01.jpg',
       name: 'img01',
-      pipeline_name: '/Users/Kratos/Desktop/YACHTCLUB/img01.jpg',
+      pipeline_name: 'sampledata/models/img01.jpg',
     },
   ],
   version: '0.52:1',
