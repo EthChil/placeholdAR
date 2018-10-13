@@ -16,7 +16,7 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.google.ar.core.examples.java.cloudanchor">
+    package="com.nuts.deez">
 
   <uses-permission android:name="android.permission.CAMERA"/>
 
@@ -34,7 +34,7 @@
       tools:ignore="GoogleAppIndexingWarning">
 
     <activity
-        android:name=".CloudAnchorActivity"
+        android:name="com.nuts.deez.CloudAnchorActivity"
         android:label="@string/app_name"
         android:configChanges="orientation|screenSize"
         android:exported="true"

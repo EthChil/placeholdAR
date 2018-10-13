@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.ar.core.examples.java.cloudanchor;
+package com.nuts.deez;
 
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
@@ -42,15 +42,15 @@ import com.google.ar.core.PointCloud;
 import com.google.ar.core.Session;
 import com.google.ar.core.Trackable;
 import com.google.ar.core.TrackingState;
-import com.google.ar.core.examples.java.common.helpers.CameraPermissionHelper;
-import com.google.ar.core.examples.java.common.helpers.DisplayRotationHelper;
-import com.google.ar.core.examples.java.common.helpers.FullScreenHelper;
-import com.google.ar.core.examples.java.common.helpers.SnackbarHelper;
-import com.google.ar.core.examples.java.common.rendering.BackgroundRenderer;
-import com.google.ar.core.examples.java.common.rendering.ObjectRenderer;
-import com.google.ar.core.examples.java.common.rendering.ObjectRenderer.BlendMode;
-import com.google.ar.core.examples.java.common.rendering.PlaneRenderer;
-import com.google.ar.core.examples.java.common.rendering.PointCloudRenderer;
+import com.google.ar.core.examples.nuts.common.helpers.CameraPermissionHelper;
+import com.google.ar.core.examples.nuts.common.helpers.DisplayRotationHelper;
+import com.google.ar.core.examples.nuts.common.helpers.FullScreenHelper;
+import com.google.ar.core.examples.nuts.common.helpers.SnackbarHelper;
+import com.google.ar.core.examples.nuts.common.rendering.BackgroundRenderer;
+import com.google.ar.core.examples.nuts.common.rendering.ObjectRenderer;
+import com.google.ar.core.examples.nuts.common.rendering.ObjectRenderer.BlendMode;
+import com.google.ar.core.examples.nuts.common.rendering.PlaneRenderer;
+import com.google.ar.core.examples.nuts.common.rendering.PointCloudRenderer;
 import com.google.ar.core.exceptions.CameraNotAvailableException;
 import com.google.ar.core.exceptions.UnavailableApkTooOldException;
 import com.google.ar.core.exceptions.UnavailableArcoreNotInstalledException;
