@@ -112,7 +112,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
           if (imgRenderable == null) {
             return;
           }
-
+          
           // Create the Anchor.
           Anchor anchor = hitResult.createAnchor();
           AnchorNode anchorNode = new AnchorNode(anchor);
