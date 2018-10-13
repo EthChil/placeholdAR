@@ -93,6 +93,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
 
             // Set the local scale of the node BEFORE setting its parent
             andy.setLocalScale(new Vector3(0.02f, 0.02f, 0.02f));
+            andy.get
           andy.setParent(anchorNode);
           andy.setRenderable(andyRenderable);
 
