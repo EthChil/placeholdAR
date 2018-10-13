@@ -30,6 +30,7 @@ import com.google.ar.core.Anchor;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
 import com.google.ar.sceneform.AnchorNode;
+import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
@@ -86,8 +87,15 @@ public class HelloSceneformActivity extends AppCompatActivity {
 
           // Create the transformable andy and add it to the anchor.
           TransformableNode andy = new TransformableNode(arFragment.getTransformationSystem());
+
+            andy.getScaleController().setMinScale(0.01f);
+            andy.getScaleController().setMaxScale(2.0f);
+
+            // Set the local scale of the node BEFORE setting its parent
+            andy.setLocalScale(new Vector3(0.02f, 0.02f, 0.02f));
           andy.setParent(anchorNode);
           andy.setRenderable(andyRenderable);
+
           andy.select();
         });
   }
