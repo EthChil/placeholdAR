@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.ar.core.examples.java.cloudanchor;
+package com.nuts.deez;
 
 import android.content.Context;
 import android.util.Log;
