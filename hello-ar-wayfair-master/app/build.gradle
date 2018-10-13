@@ -72,6 +72,9 @@ dependencies {
 
     // JSON Converter
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+
+    //Firebase
+    implementation 'com.google.firebase:firebase-core:16.0.1'
 }
 
 apply plugin: 'com.google.ar.sceneform.plugin'
@@ -80,3 +83,4 @@ sceneform.asset('sampledata/models/cube.gltf',
         'sampledata/models/cube.sfa',
         'src/main/res/raw/cube')
 
+apply plugin: 'com.google.gms.google-services'
