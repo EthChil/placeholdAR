@@ -370,7 +370,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
                   shoes.add(shoe);
 
                   Shoe tee1 =  new Shoe(
-                          "https://stockx.imgix.net/products/streetwear/Supreme-Cat-in-the-Hat-Hooded-Sweatshirt-Heather-Grey.jpg?fit=fill&bg=FFFFFF&w=1400&h=1000&auto=format,compress&trim=color&q=90",
+                          "https://i.imgur.com/za5RGKn.png",
                           215,
                           "Supreme Cat In the Hat Hoodie");
 
@@ -380,7 +380,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
                           "Supreme GORE-TEX Court Jacket White");
 
                   Shoe tee3 =  new Shoe(
-                          "https://stockx.imgix.net/products/streetwear/Supreme-Cat-in-the-Hat-Hooded-Sweatshirt-Bright-Royal.jpg?fit=fill&bg=FFFFFF&w=1400&h=1000&auto=format,compress&trim=color&q=90",
+                          "https://i.imgur.com/vF7YwIj.png",
                           375,
                           "Supreme Cat In The Hat Hoodie Blue");
 
@@ -390,7 +390,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
                           "Nikelab x OFF-WHITE Mercurial NRG X Hoodie Black");
 
                   Shoe tee5 =  new Shoe(
-                          "https://stockx.imgix.net/products/streetwear/Supreme-Nike-Crewneck-Burgundy.jpg?fit=fill&bg=FFFFFF&w=1400&h=1000&auto=format,compress&trim=color&q=90",
+                          "https://i.imgur.com/T4TR9Ib.png",
                           149,
                           "Supreme Nike Crewneck Burgundy");
 
