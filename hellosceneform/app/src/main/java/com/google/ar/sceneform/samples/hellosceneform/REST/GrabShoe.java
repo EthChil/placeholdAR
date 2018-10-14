@@ -31,11 +31,12 @@ public class GrabShoe {
             public void onResponse(retrofit2.Call<ShoesResponse> call, Response<ShoesResponse> response) {
                 Log.i(LOG_TAG, "Received response: " + response.toString());
                 try {
-                    JSONObject serverResp = new JSONObject(response.toString());
+                    JSONObject serverResp = new JSONObject(response.raw().toString());
                     System.out.print("POTATO: starting tempShoe logs");
                     for (int i = 0; i < 25; i++) {
                         Shoe tempShoe = new Shoe();
-                        Log.i("POTATO", serverResp.getString("shortDescription"));
+                        Log.i("POTATO", response.message());
+                        //response.message();
                         tempShoe.name = serverResp.getString("shortDescription");
                         tempShoe.cost = serverResp.getInt("retailPrice");
 
