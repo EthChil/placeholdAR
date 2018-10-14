@@ -133,14 +133,16 @@ public class HelloSceneformActivity extends AppCompatActivity {
     Shoe shoe = new Shoe();
     shoe.imageLink = "https://icon2.kisspng.com/20171221/fsq/cat-5a3c42efbe6bf2.68329414151389873578.jpg";
     allShoes = new Shoe[25];
-    allShoes[0] = shoe;
+    for(int i=0; i < 24; i++){
+        allShoes[i] = shoe;
+    }
 
         setContentView(R.layout.activity_ux);
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
 
         ImageView view = (ImageView) getLayoutInflater().inflate(R.layout.test_view, null);
 
-        Picasso.get().load(allShoes[itemNumber].imageLink).into(view);
+       // Picasso.get().load(allShoes[itemNumber].imageLink).into(view);
 
         // Make Wayfair Api call
     // API DOCS: bit.ly/wayfair3dapi
@@ -242,15 +244,24 @@ public class HelloSceneformActivity extends AppCompatActivity {
       Button leftButton = findViewById(R.id.left_button);
       leftButton.setOnClickListener(
               (unusedView) -> {
-                  Picasso.get().load("https://cdn4.iconfinder.com/data/icons/defaulticon/icons/png/256x256/arrow-alt-left.png").into(middleImg);
+                  if(itemNumber > 0){
+                      itemNumber --;
+                  } else {
+                      itemNumber = 23;
+                  }
+                  Picasso.get().load(allShoes[itemNumber].imageLink).into(middleImg);
               });
       // Initialize the "right" button.
       Button rightButton = findViewById(R.id.right_button);
       rightButton.setOnClickListener(
               (unusedView) -> {
-                  Picasso.get().load("https://png.icons8.com/windows/1600/long-arrow-right.png").into(middleImg);
+                  if(itemNumber < 24){
+                      itemNumber ++;
+                  } else {
+                      itemNumber = 0;
+                  }
+                  Picasso.get().load(allShoes[itemNumber].imageLink).into(middleImg);
               });
-
       Button deletebutton = findViewById(R.id.delete_button);
       deletebutton.setOnClickListener(
               (unusedView) -> {
