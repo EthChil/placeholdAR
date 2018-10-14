@@ -288,6 +288,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
         cyclebutton.setOnClickListener(
                 (unused) -> {
                     productType = ProductType.values()[(productType.ordinal() + 1) % ProductType.values().length];
+                    itemNumber = 0;
                     pullIntoView();
                 });
   }
