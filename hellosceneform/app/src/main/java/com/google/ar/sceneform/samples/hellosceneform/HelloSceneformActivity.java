@@ -181,7 +181,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
 
     arFragment.setOnTapArPlaneListener(
       (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
-        if(true){
+        if(false){
 
           // Create the Anchor.
           Anchor anchor = hitResult.createAnchor();
@@ -247,9 +247,9 @@ public class HelloSceneformActivity extends AppCompatActivity {
        TextView imgText = findViewById(R.id.item_text);
 
        // TODO: REPLACE
-//        Picasso.get().load(masterItem.get(0).imageLink).into(middleImg);
+//        Picasso.get().load(shoes.get(itemNumber).imageLink).into(middleImg);
 //        for(int i = 0; i < 25; i++){
-//            if(allShoes[i] == null){
+//            if(shoes.get(i) == null){
 //                Log.i("policemenaregay", "ethan succs"+Integer.toString(i));
 //            }
 //        }
@@ -261,8 +261,8 @@ public class HelloSceneformActivity extends AppCompatActivity {
                       itemNumber = 23;
                   }
                   // TODO: REPLACE
-//                  Picasso.get().load(.this.shoes.get(itemNumber).imageLink).into(middleImg);
-//                  imgText.setText("Product: " + Integer.toString(itemNumber) + "\n Price: ");
+                 Picasso.get().load(this.shoes.get(itemNumber).imageLink).into(middleImg);
+                 imgText.setText("Product: " + Integer.toString(itemNumber) + "\n Price: ");
               });
       // Initialize the "right" button.
       Button rightButton = findViewById(R.id.right_button);
@@ -273,9 +273,9 @@ public class HelloSceneformActivity extends AppCompatActivity {
                   }
                   // TODO: REPLACE
 
-                String imageUrl = shoes.get(0).imageLink;
+                String imageUrl = shoes.get(itemNumber).imageLink;
                 Picasso.get().load(imageUrl).into(middleImg);
-//                  imgText.setText("Product: " + Integer.toString(itemNumber) + "\n Price: ");
+                  imgText.setText("Product: " + Integer.toString(itemNumber) + "\n Price: ");
               });
       Button deletebutton = findViewById(R.id.delete_button);
       deletebutton.setOnClickListener(
@@ -300,10 +300,10 @@ public class HelloSceneformActivity extends AppCompatActivity {
               ArrayList shoes = new ArrayList<Shoe>();
 
               for (int i = 0; i < products.size(); i++) {
-                  Product product = products.get(0);
+                  Product product = products.get(i);
 
                   Shoe shoe = new Shoe(
-                          product.shortDescription,
+                          HttpUtils.genImageUrl(product.shortDescription),
                           Integer.parseInt(product.retailPrice),
                           product.shortDescription);
                   shoes.add(shoe);
