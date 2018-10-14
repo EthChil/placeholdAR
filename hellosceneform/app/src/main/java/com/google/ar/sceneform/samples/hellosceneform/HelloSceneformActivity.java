@@ -68,7 +68,8 @@ public class HelloSceneformActivity extends AppCompatActivity {
   private GrabShoe shoeMaster = new GrabShoe();
   private Shoe allShoes[] = shoeMaster.shoes;
 
-
+  //Counter bois
+  private int itemNumber = 0;
 
   private Session session;
 
@@ -90,28 +91,19 @@ public class HelloSceneformActivity extends AppCompatActivity {
   // FutureReturnValueIgnored is not valid
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
-
-
-
-
-
-
     if (!checkIsSupportedDeviceOrFinish(this)) {
       return;
     }
 
-
     setContentView(R.layout.activity_ux);
     arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
 
-
         ViewRenderable.builder()
-                .setView(arFragment.getContext(), R.layout.test_view)
-                .build()
-                .thenAccept(
-                        (renderable) -> {
-                            imgRenderable = renderable;
+            .setView(arFragment.getContext(), R.layout.test_view)
+            .build()
+            .thenAccept(
+                (renderable) -> {
+                    imgRenderable = renderable;
 
 //                          // Change the rotation
 //                          if (plane.getType() ==  Plane.Type.VERTICAL) {
@@ -120,7 +112,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
 //                              Quaternion upQuat = Quaternion.lookRotation(planeNormal, Vector3.up());
 //                              img.setWorldRotation(upQuat);
 //                          }
-                        });
+                });
 
         arFragment.setOnTapArPlaneListener(
         (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
@@ -133,7 +125,8 @@ public class HelloSceneformActivity extends AppCompatActivity {
           AnchorNode anchorNode = new AnchorNode(anchor);
           anchorNode.setName("left top");
           anchorNode.setParent(arFragment.getArSceneView().getScene());
-          //Hardcoded andhors
+          //Hardcoded anchors
+
           // Create the transformable andy and add it to the anchor.
           TransformableNode img = new TransformableNode(arFragment.getTransformationSystem());
           img.getScaleController().setMinScale(0.01f);
@@ -164,17 +157,29 @@ public class HelloSceneformActivity extends AppCompatActivity {
         });
         ImageView middleImg = findViewById(R.id.middle_img);
         Picasso.get().load("https://icon2.kisspng.com/20171221/fsq/cat-5a3c42efbe6bf2.68329414151389873578.jpg").into(middleImg);
+        for(int i = 0; i < 25; i++){
+            if(allShoes[i] == null){
+                Log.i("policemenaregay", "ethan succs"+Integer.toString(i));
+            }
+        }
+
         // Initialize the "left" button.
         Button leftButton = findViewById(R.id.left_button);
         leftButton.setOnClickListener(
                 (unusedView) -> {
-                    Picasso.get().load("https://cdn4.iconfinder.com/data/icons/defaulticon/icons/png/256x256/arrow-alt-left.png").into(middleImg);
+                    if(itemNumber > 0){
+                        itemNumber --;
+                    }
+                    Picasso.get().load(allShoes[itemNumber].imageLink).into(middleImg);
                 });
         // Initialize the "right" button.
         Button rightButton = findViewById(R.id.right_button);
         rightButton.setOnClickListener(
                 (unusedView) -> {
-                    Picasso.get().load("https://png.icons8.com/windows/1600/long-arrow-right.png").into(middleImg);
+                    if(itemNumber < 24){
+                        itemNumber ++;
+                    }
+                    Picasso.get().load(allShoes[itemNumber].imageLink).into(middleImg);
                 });
   }
 
