@@ -29,28 +29,17 @@
       android:layout_height="wrap_content"
       android:gravity="center|center"
       android:layout_alignParentBottom="true"
-      android:orientation="horizontal">
+      android:orientation="horizontal"
+      android:paddingBottom="15dp">
     <Button
         android:id="@+id/left_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/left_button_string"/>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical">
       <android.support.v7.widget.AppCompatImageView
           android:id="@+id/middle_img"
           android:layout_width="150dp"
           android:layout_height="150dp" />
-      <TextView
-          android:id="@+id/item_text"
-          android:layout_width="100dp"
-          android:layout_height="40dp"
-          android:gravity="center"> </TextView>
-    </LinearLayout>
 
     <Button
         android:id="@+id/right_button"
@@ -58,6 +47,13 @@
         android:layout_height="wrap_content"
         android:text="@string/right_button_string"/>
   </LinearLayout>
+  <TextView
+      android:id="@+id/item_text"
+      android:layout_width="wrap_content"
+      android:layout_height="40dp"
+      android:layout_alignParentBottom="true"
+      android:layout_centerHorizontal="true"
+      android:gravity="center"> </TextView>
 
   <Button
       android:id="@+id/delete_button"

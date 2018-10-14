@@ -267,28 +267,25 @@ public class HelloSceneformActivity extends AppCompatActivity {
                   if(itemNumber < 0){
                       itemNumber = 23;
                   }
-                  // TODO: REPLACE
                  Picasso.get().load(self.shoes.get(itemNumber).imageLink).into(middleImg);
-                 imgText.setText("Product: " + Integer.toString(itemNumber) + "\n Price: ");
+                 imgText.setText(shoes.get(itemNumber).name + "\n Price: $" + Integer.toString(shoes.get(itemNumber).cost));
               });
       // Initialize the "right" button.
       Button rightButton = findViewById(R.id.right_button);
       rightButton.setOnClickListener((unused) -> {
-                  itemNumber ++;
-                  if(itemNumber > 23){
-                      itemNumber = 0;
-                  }
-                  // TODO: REPLACE
-
-                String imageUrl = shoes.get(itemNumber).imageLink;
-                Picasso.get().load(imageUrl).into(middleImg);
-                  imgText.setText("Product: " + Integer.toString(itemNumber) + "\n Price: ");
-              });
+          itemNumber ++;
+          if(itemNumber > 23){
+              itemNumber = 0;
+          }
+          String imageUrl = shoes.get(itemNumber).imageLink;
+          Picasso.get().load(imageUrl).into(middleImg);
+          imgText.setText(shoes.get(itemNumber).name + "\n Price: $" + Integer.toString(shoes.get(itemNumber).cost));
+      });
       Button deletebutton = findViewById(R.id.delete_button);
       deletebutton.setOnClickListener(
-              (unused) -> {
-                  onClear();
-              });
+          (unused) -> {
+              onClear();
+          });
   }
 
   public void pullIntoView() {
