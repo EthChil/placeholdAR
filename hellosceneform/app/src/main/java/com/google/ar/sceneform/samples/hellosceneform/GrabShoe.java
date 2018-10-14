@@ -10,24 +10,35 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.net.URI;
+import java.net.URL;
+
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Call;
+
+
+import static com.loopj.android.http.AsyncHttpClient.LOG_TAG;
 
 public class GrabShoe {
 
-    public Shoe shoes[] = new Shoe[25];
+    Shoe shoes[] = new Shoe[25];
 
-    public GrabShoe() {
-        RequestParams rp = new RequestParams();
-        rp.add("x-api-key", "B1sR9t386d6UVO6aI7KRf91gLaUywqEK1TLBGsXv");
 
-        HttpUtils.get("https://gateway.stockx.com/public/v1/browse?limit=25", rp, new JsonHttpResponseHandler() {
-            public void onSuccess(int statusCode, PreferenceActivity.Header[] headers, JSONObject response) {
-                // If the response is JSONObject instead of expected JSONArray
-                Log.d("asd", "---------------- this is response : " + response);
+    private void getShoes() {
+        StockXinterface service = StockXinterface.retrofit.create(StockXinterface.class);
+
+        retrofit2.Call<StockX> call = service.getShoes();
+
+        call.enqueue(new Callback<StockX>() {
+            @Override
+            public void onResponse(retrofit2.Call<StockX> call, Response<StockX> response) {
+                Log.i(LOG_TAG, "Received response: " + response.toString());
                 try {
                     JSONObject serverResp = new JSONObject(response.toString());
                     System.out.print("POTATO: starting tempShoe logs");
-                    for(int i = 0; i < 25; i++){
+                    for (int i = 0; i < 25; i++) {
                         Shoe tempShoe = new Shoe();
                         tempShoe.name = serverResp.getString("shortDescription");
                         tempShoe.cost = serverResp.getInt("retailPrice");
@@ -35,22 +46,53 @@ public class GrabShoe {
                         tempShoe.imageLink = HttpUtils.genImageUrl(tempShoe.name);
                         shoes[i] = tempShoe;
                     }
-
-                    System.out.print("POTATO: finished tempShoe logs");
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
                 }
-
-
             }
 
-            public void onSuccess(int statusCode, PreferenceActivity.Header[] headers, JSONArray timeline) {
-                // Pull out the first event on the public timeline
-
+            @Override
+            public void onFailure(retrofit2.Call<StockX> call, Throwable t) {
+                Log.i(LOG_TAG, t.getMessage());
             }
         });
 
     }
-
 }
+
+
+
+//    public BufferedImage getImageFormat(String link){
+//
+//        BufferedImage img = null;
+//
+//        try {
+//            response = client.newCall(request).execute();
+//            System.out.println(response.body().string());
+//            URL url = new URL(link);
+//            img = ImageIO.read(url);
+//        }catch (IOException e){
+//
+//        };
+//
+//        ImageFilter filter = new RGBImageFilter() {
+//            int transparentColor = Color.white.getRGB() | 0xFF000000;
+//
+//            public final int filterRGB(int x, int y, int rgb) {
+//                if ((rgb | 0xFF000000) == transparentColor) {
+//                    return 0x00FFFFFF & rgb;
+//                } else {
+//                    return rgb;
+//                }
+//            }
+//        };
+//
+//        ImageProducer filteredImgProd = new FilteredImageSource(icon.getImage().getSource(), filter);
+//        Image transparentImg = Toolkit.getDefaultToolkit().createImage(filteredImgProd);
+//
+//
+//        label.setIcon(new ImageIcon(transparentImg));
+//
+//        frame.add(label);
+//
+//    }
+
