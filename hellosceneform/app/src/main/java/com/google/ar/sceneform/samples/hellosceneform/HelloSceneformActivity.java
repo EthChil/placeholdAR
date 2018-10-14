@@ -79,6 +79,13 @@ public class HelloSceneformActivity extends AppCompatActivity {
   private ModelRenderable modelRenderable;
   private ModelRenderable cubeRenderable;
   private ArrayList<Anchor> anchors;
+  private enum ProductType {
+      WAYFAIR,
+      SHOE,
+      SHIRT
+  }
+  private ProductType productType = ProductType.WAYFAIR;
+  private List<ProductInfoSchema> wayfair;
   //Handle shoes
 //  private GrabShoe shoeMaster = new GrabShoe();
 //  private Shoe allShoes[] = shoeMaster.getShoeArr();
@@ -149,7 +156,9 @@ public class HelloSceneformActivity extends AppCompatActivity {
     HelloSceneformActivity self = this;
 
     setupRetrofit();
-    createShoeService();
+    if (productType == ProductType.SHOE) {
+        createShoeService();
+    }
 
     if (!checkIsSupportedDeviceOrFinish(this)) {
       return;
@@ -170,7 +179,8 @@ public class HelloSceneformActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<List<ProductInfoSchema>> call, Response<List<ProductInfoSchema>> response) {
                     // Step 2: Get 3D assets and create a renderable
-                    get3DAsset(response.body().get(0).getModel().getGlbUrl());
+                    wayfair = response.body();
+                    pullIntoView();
                 }
 
                 @Override
@@ -182,7 +192,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
 
     arFragment.setOnTapArPlaneListener(
       (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
-        if(true){
+        if(productType != ProductType.WAYFAIR){
 
             // Create the Anchor.
             Anchor anchor = hitResult.createAnchor();
@@ -259,7 +269,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
                       itemNumber = 23;
                   }
                  pullIntoView();
-                 imgText.setText(shoes.get(itemNumber).name + "\n Price: $" + Integer.toString(shoes.get(itemNumber).cost));
+
               });
       // Initialize the "right" button.
       Button rightButton = findViewById(R.id.right_button);
@@ -269,7 +279,6 @@ public class HelloSceneformActivity extends AppCompatActivity {
               itemNumber = 0;
           }
           pullIntoView();
-          imgText.setText(shoes.get(itemNumber).name + "\n Price: $" + Integer.toString(shoes.get(itemNumber).cost));
       });
       Button deletebutton = findViewById(R.id.delete_button);
       deletebutton.setOnClickListener(
@@ -288,24 +297,31 @@ public class HelloSceneformActivity extends AppCompatActivity {
   public void pullIntoView() {
       ImageView middleImg = findViewById(R.id.middle_img);
       TextView imgText = findViewById(R.id.item_text);
-      Picasso.get().load(this.shoes.get(this.itemNumber).imageLink).into(middleImg);
-      ImageView view = (ImageView) getLayoutInflater().inflate(R.layout.test_view, null);
+        if (productType == ProductType.WAYFAIR) {
+            get3DAsset(wayfair.get(itemNumber).getModel().getGlbUrl());
+            Picasso.get().load(wayfair.get(this.itemNumber).getThumbnailImageUrl()).into(middleImg);
+            imgText.setText(wayfair.get(itemNumber).getProducName() + "\n Price: $" + wayfair.get(itemNumber).getSalePrice());
+        } else {
+            imgText.setText(shoes.get(itemNumber).name + "\n Price: $" + Integer.toString(shoes.get(itemNumber).cost));
+            Picasso.get().load(this.shoes.get(this.itemNumber).imageLink).into(middleImg);
+            ImageView view = (ImageView) getLayoutInflater().inflate(R.layout.test_view, null);
 
-      Picasso.get().load(shoes.get(itemNumber).imageLink).into(view);
-
-
-      ViewRenderable.builder()
-              .setView(arFragment.getContext(), view)
-              .build()
-              .thenAccept(
-                      (renderable) -> {
-                          imgRenderable = renderable;
+            Picasso.get().load(shoes.get(itemNumber).imageLink).into(view);
 
 
-                      });
+            ViewRenderable.builder()
+                    .setView(arFragment.getContext(), view)
+                    .build()
+                    .thenAccept(
+                            (renderable) -> {
+                                imgRenderable = renderable;
 
-      Log.i("FOOBAR", this.shoes.toString());
-      Log.i("FOOBAR", this.shoes.get(this.itemNumber).imageLink);
+
+                            });
+
+            Log.i("FOOBAR", this.shoes.toString());
+            Log.i("FOOBAR", this.shoes.get(this.itemNumber).imageLink);
+        }
   }
 
 
