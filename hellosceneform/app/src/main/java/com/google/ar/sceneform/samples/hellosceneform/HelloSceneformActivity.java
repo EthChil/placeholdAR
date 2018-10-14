@@ -67,7 +67,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
 
   //Handle shoes
   private GrabShoe shoeMaster = new GrabShoe();
-  private Shoe allShoes[];
+  private Shoe allShoes[] = shoeMaster.shoes;
 
   //Counter bois
   private int itemNumber = 0;
