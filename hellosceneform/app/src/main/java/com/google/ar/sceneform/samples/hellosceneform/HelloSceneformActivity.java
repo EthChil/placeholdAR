@@ -25,6 +25,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -66,7 +67,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
 
   //Handle shoes
   private GrabShoe shoeMaster = new GrabShoe();
-  private Shoe allShoes[] = shoeMaster.shoes;
+  private Shoe allShoes[];
 
 
 
@@ -96,7 +97,6 @@ public class HelloSceneformActivity extends AppCompatActivity {
 
 
 
-
     if (!checkIsSupportedDeviceOrFinish(this)) {
       return;
     }
@@ -106,8 +106,11 @@ public class HelloSceneformActivity extends AppCompatActivity {
     arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
 
 
+        ImageView view = (ImageView) getLayoutInflater().inflate(R.layout.test_view, null);
+        Picasso.get().load(allShoes[itemNumber].imageLink).into(view);
+
         ViewRenderable.builder()
-                .setView(arFragment.getContext(), R.layout.test_view)
+                .setView(arFragment.getContext(), view)
                 .build()
                 .thenAccept(
                         (renderable) -> {
@@ -143,7 +146,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
           img.setRenderable(imgRenderable);
 
           ViewRenderable.builder()
-            .setView(arFragment.getContext(), R.layout.test_view)
+            .setView(arFragment.getContext(), view)
             .build()
             .thenAccept(
                 (renderable) -> {
