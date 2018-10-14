@@ -73,7 +73,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
 
   private Session session;
 
-    private void onClear() {
+    public void onClear() {
         List<Node> children = new ArrayList<>(arFragment.getArSceneView().getScene().getChildren());
         for (Node node : children) {
             if (node instanceof AnchorNode) {
@@ -119,7 +119,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
           if (imgRenderable == null) {
             return;
           }
-          onClear();
+
           // Create the Anchor.
           Anchor anchor = hitResult.createAnchor();
           AnchorNode anchorNode = new AnchorNode(anchor);
@@ -180,6 +180,12 @@ public class HelloSceneformActivity extends AppCompatActivity {
                         itemNumber ++;
                     }
                     Picasso.get().load(allShoes[itemNumber].imageLink).into(middleImg);
+                });
+
+        Button deletebutton = findViewById(R.id.delete_button);
+        deletebutton.setOnClickListener(
+                (unusedView) -> {
+                    onClear();
                 });
   }
 
