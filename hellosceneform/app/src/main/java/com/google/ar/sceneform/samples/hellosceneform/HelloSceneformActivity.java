@@ -85,8 +85,8 @@ public class HelloSceneformActivity extends AppCompatActivity {
   //Counter bois
 
     Retrofit retrofit;
-  private int itemNumber = 0;
-    private ArrayList<Shoe> shoes;
+    private int itemNumber = 0;
+    private ArrayList<Shoe> shoes = new ArrayList<Shoe>();
 
   public void setupRetrofit() {
       retrofit = new Retrofit.Builder()
@@ -144,6 +144,8 @@ public class HelloSceneformActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
+    HelloSceneformActivity self = this;
+
     setupRetrofit();
     createShoeService();
 
@@ -181,7 +183,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
 
     arFragment.setOnTapArPlaneListener(
       (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
-        if(false){
+        if(true){
 
           // Create the Anchor.
           Anchor anchor = hitResult.createAnchor();
@@ -247,7 +249,12 @@ public class HelloSceneformActivity extends AppCompatActivity {
        TextView imgText = findViewById(R.id.item_text);
 
        // TODO: REPLACE
-//        Picasso.get().load(shoes.get(itemNumber).imageLink).into(middleImg);
+
+        if (self.shoes.size() > 0) {
+            pullIntoView();
+        } else {
+            Log.i("FOOBAR", self.shoes.toString());
+        }
 //        for(int i = 0; i < 25; i++){
 //            if(shoes.get(i) == null){
 //                Log.i("policemenaregay", "ethan succs"+Integer.toString(i));
@@ -261,7 +268,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
                       itemNumber = 23;
                   }
                   // TODO: REPLACE
-                 Picasso.get().load(this.shoes.get(itemNumber).imageLink).into(middleImg);
+                 Picasso.get().load(self.shoes.get(itemNumber).imageLink).into(middleImg);
                  imgText.setText("Product: " + Integer.toString(itemNumber) + "\n Price: ");
               });
       // Initialize the "right" button.
@@ -284,12 +291,20 @@ public class HelloSceneformActivity extends AppCompatActivity {
               });
   }
 
+  public void pullIntoView() {
+      ImageView middleImg = findViewById(R.id.middle_img);
+      TextView imgText = findViewById(R.id.item_text);
+      Picasso.get().load(this.shoes.get(this.itemNumber).imageLink).into(middleImg);
+      Log.i("FOOBAR", this.shoes.toString());
+      Log.i("FOOBAR", this.shoes.get(this.itemNumber).imageLink);
+  }
+
 
   public StockXService createShoeService() {
       StockXService service = retrofit.create(StockXService.class);
 
       retrofit2.Call<ShoesResponse> call = service.getShoes();
-
+      HelloSceneformActivity self = this;
       call.enqueue(new Callback<ShoesResponse>() {
 
           @Override
@@ -309,7 +324,8 @@ public class HelloSceneformActivity extends AppCompatActivity {
                   shoes.add(shoe);
               }
 
-              HelloSceneformActivity.this.shoes = shoes;
+              self.shoes = shoes;
+              self.pullIntoView();
           }
 
           @Override

@@ -30,6 +30,6 @@ public class HttpUtils {
     }
 
     public static String genImageUrl(String section){
-        return "https://stockx-360.imgix.net/" + section + "/Images/" + section + "/Lv2/img0.jpg";
+        return "https://stockx-360.imgix.net/" + section + "/Images/" + section + "/Lv2/img01.jpg";
     }
 }
