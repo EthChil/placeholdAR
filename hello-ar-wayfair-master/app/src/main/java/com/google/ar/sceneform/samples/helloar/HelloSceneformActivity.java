@@ -26,6 +26,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.ar.core.Anchor;
@@ -51,6 +54,8 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import com.squareup.picasso.Picasso;
 
 /**
  * This is an example activity that uses the Sceneform UX package to make common AR tasks easier.
@@ -118,51 +123,63 @@ public class HelloSceneformActivity extends AppCompatActivity {
         // Get 5 models without registration / key
         // Register for free to get access to 200 Wayfair models
         RetrofitClientInstance.getRetrofitInstance(EMAIL, API_KEY)
-                .create(WayfairApiRequest.class)
-                .listModels()
-                .enqueue(new Callback<List<ProductInfoSchema>>() {
-                    @Override
-                    public void onResponse(Call<List<ProductInfoSchema>> call, Response<List<ProductInfoSchema>> response) {
-                        // Step 2: Get 3D assets and create a renderable
-                        get3DAsset(response.body().get(0).getModel().getGlbUrl());
-                    }
+            .create(WayfairApiRequest.class)
+            .listModels()
+            .enqueue(new Callback<List<ProductInfoSchema>>() {
+                @Override
+                public void onResponse(Call<List<ProductInfoSchema>> call, Response<List<ProductInfoSchema>> response) {
+                    // Step 2: Get 3D assets and create a renderable
+                    get3DAsset(response.body().get(0).getModel().getGlbUrl());
+                }
 
-                    @Override
-                    public void onFailure(Call<List<ProductInfoSchema>> call, Throwable t) {
-                        Log.e("Api request failed", t.getMessage());
-                    }
-                });
+                @Override
+                public void onFailure(Call<List<ProductInfoSchema>> call, Throwable t) {
+                    Log.e("Api request failed", t.getMessage());
+                }
+            });
 
         // Step 4: Add interactions to the Scene
         arFragment.setOnTapArPlaneListener(
-                (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
-                    if (modelRenderable == null) {
-                        return;
-                    }
+            (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
+                if (modelRenderable == null) {
+                    return;
+                }
 
-                    // Step 3: Build the Scene
-                    // Create the Anchor.
-                    Anchor anchor = hitResult.createAnchor();
-                    session.hostCloudAnchor(anchor);
-                    // You can get the id and put it in firebase
-                    AnchorNode anchorNode = new AnchorNode(anchor);
-                    anchorNode.setParent(arFragment.getArSceneView().getScene());
+                // Step 3: Build the Scene
+                // Create the Anchor.
+                Anchor anchor = hitResult.createAnchor();
+                session.hostCloudAnchor(anchor);
+                // You can get the id and put it in firebase
+                AnchorNode anchorNode = new AnchorNode(anchor);
+                anchorNode.setParent(arFragment.getArSceneView().getScene());
 
-                    // Create the transformable model Node and add it to the anchor.
-                    // A TransformableNode allows the node to be Translated, Rotated and Scaled by user
-                    TransformableNode modelNode = new TransformableNode(arFragment.getTransformationSystem());
-                    modelNode.setParent(anchorNode);
-                    modelNode.setRenderable(modelRenderable);
-                    // Wayfair models are of correct scale and dimensions already
-                    // Disable Scale controller of a TransformableNode in order to prevent model scaling
-                    modelNode.getScaleController().setEnabled(false);
-                    modelNode.select();
+                // Create the transformable model Node and add it to the anchor.
+                // A TransformableNode allows the node to be Translated, Rotated and Scaled by user
+                TransformableNode modelNode = new TransformableNode(arFragment.getTransformationSystem());
+                modelNode.setParent(anchorNode);
+                modelNode.setRenderable(modelRenderable);
+                // Wayfair models are of correct scale and dimensions already
+                // Disable Scale controller of a TransformableNode in order to prevent model scaling
+                modelNode.getScaleController().setEnabled(false);
+                modelNode.select();
 
 
-                    // Inorder to hide the built in shadow plane for Wayfair models
-                    // This is not required for other models
-                    modelRenderable.setMaterial(modelRenderable.getSubmeshCount() - 1, cubeRenderable.getMaterial());
-                });
+                // Inorder to hide the built in shadow plane for Wayfair models
+                // This is not required for other models
+                modelRenderable.setMaterial(modelRenderable.getSubmeshCount() - 1, cubeRenderable.getMaterial());
+            });
+        // Initialize the "left" button.
+        Button leftButton = findViewById(R.id.left_button);
+        leftButton.setOnClickListener(
+            (unusedView) -> {
+            });
+        // Initialize the "right" button.
+        Button rightButton = findViewById(R.id.right_button);
+        rightButton.setOnClickListener(
+            (unusedView) -> {
+            });
+        ImageView middleImg = findViewById(R.id.middle_img);
+        Picasso.get().load("https://icon2.kisspng.com/20171221/fsq/cat-5a3c42efbe6bf2.68329414151389873578.jpg").into(middleImg);
     }
 
     @Override

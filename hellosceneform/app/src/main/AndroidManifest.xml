@@ -17,8 +17,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.google.ar.sceneform.samples.hellosceneform">
     <!-- Always needed for AR. -->
-
     <uses-permission android:name="android.permission.CAMERA" />
+    <!-- For downloading the models at runtime -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <!-- This tag indicates that this application requires ARCore. This results in the application
         only being visible in the Google Play Store on devices that support ARCore. -->
     <uses-feature android:name="android.hardware.camera.ar" android:required="true"/>
@@ -34,6 +35,10 @@
             application only being visible in the Google Play Store on devices that support
             ARCore. -->
         <meta-data android:name="com.google.ar.core" android:value="required" />
+        <!-- Api key -->
+        <meta-data
+            android:name="com.google.android.ar.API_KEY"
+            android:value="AIzaSyBHIfg29iY4mnd1n2OcnEZuwWmofSMkOo0"/>
 
         <activity
             android:name=".HelloSceneformActivity"

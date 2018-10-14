@@ -67,6 +67,11 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation files('/Users/Kratos/Documents/deezNutz/android-async-http-1.4.9.jar')
     implementation 'com.google.code.gson:gson:2.2.4'
+
+    implementation "com.android.support:appcompat-v7:27.1.1"
+
+    //Picasso image download
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }
 
 apply plugin: 'com.google.ar.sceneform.plugin'
