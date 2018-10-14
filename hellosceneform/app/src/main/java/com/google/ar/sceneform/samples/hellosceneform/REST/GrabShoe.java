@@ -29,25 +29,13 @@ public class GrabShoe {
         call.enqueue(new Callback<ShoesResponse>() {
             @Override
             public void onResponse(retrofit2.Call<ShoesResponse> call, Response<ShoesResponse> response) {
-                Log.i(LOG_TAG, "Received response: " + response.toString());
-                try {
-                    JSONObject serverResp = new JSONObject(response.raw().toString());
-                    System.out.print("POTATO: starting tempShoe logs");
-                    for (int i = 0; i < 25; i++) {
-                        Shoe tempShoe = new Shoe();
-                        Log.i("POTATO", response.message());
-                        //response.message();
-                        tempShoe.name = serverResp.getString("shortDescription");
-                        tempShoe.cost = serverResp.getInt("retailPrice");
-
-                        tempShoe.imageLink = HttpUtils.genImageUrl(tempShoe.name);
-                        shoes[i] = tempShoe;
-                    }
-                } catch (JSONException e) {
-                    Log.i("POTATO", "OOOOOOOF");
+                for (int i = 0; i < 25; i++) {
+                    Shoe tempShoe = new Shoe();
+                    tempShoe.name = response.body().Products.get(i).shortDescription;
+                    tempShoe.cost = Integer.parseInt(response.body().Products.get(i).retailPrice);
+                    tempShoe.imageLink = HttpUtils.genImageUrl(tempShoe.name);
+                    shoes[i] = tempShoe;
                 }
-
-
             }
 
             @Override
