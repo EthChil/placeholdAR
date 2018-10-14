@@ -11,7 +11,7 @@ import retrofit2.http.Headers;
 public interface StockXinterface {
 
     @Headers("x-api-key: B1sR9t386d6UVO6aI7KRf91gLaUywqEK1TLBGsXv")
-    @GET("browse?limit=10")
+    @GET("browse?limit=25")
     Call<ShoesResponse> getShoes();
 
     Retrofit retrofit = new Retrofit.Builder()

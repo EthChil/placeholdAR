@@ -21,7 +21,7 @@ public class GrabShoe {
     public Shoe shoes[] = new Shoe[25];
 
 
-    private void getShoes() {
+    public GrabShoe() {
         StockXinterface service = StockXinterface.retrofit.create(StockXinterface.class);
 
         retrofit2.Call<ShoesResponse> call = service.getShoes();
@@ -43,6 +43,7 @@ public class GrabShoe {
                         shoes[i] = tempShoe;
                     }
                 } catch (JSONException e) {
+                    Log.i("POTATO", "OOOOOOOF");
                 }
 
 
