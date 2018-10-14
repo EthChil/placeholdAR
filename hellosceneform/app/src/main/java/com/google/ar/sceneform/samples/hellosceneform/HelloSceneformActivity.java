@@ -78,6 +78,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
   private ViewRenderable imgRenderable;
   private ModelRenderable modelRenderable;
   private ModelRenderable cubeRenderable;
+  private ArrayList<Anchor> anchors;
   //Handle shoes
 //  private GrabShoe shoeMaster = new GrabShoe();
 //  private Shoe allShoes[] = shoeMaster.getShoeArr();
@@ -156,9 +157,6 @@ public class HelloSceneformActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ux);
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
 
-        ImageView view = (ImageView) getLayoutInflater().inflate(R.layout.test_view, null);
-
-       // Picasso.get().load(allShoes[itemNumber].imageLink).into(view);
 
         // Make Wayfair Api call
     // API DOCS: bit.ly/wayfair3dapi
@@ -185,35 +183,27 @@ public class HelloSceneformActivity extends AppCompatActivity {
       (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
         if(true){
 
-          // Create the Anchor.
-          Anchor anchor = hitResult.createAnchor();
-          AnchorNode anchorNode = new AnchorNode(anchor);
-          anchorNode.setName("left top");
-          anchorNode.setParent(arFragment.getArSceneView().getScene());
-          //Hardcoded andhors
-          // Create the transformable andy and add it to the anchor.
-          TransformableNode img = new TransformableNode(arFragment.getTransformationSystem());
-          img.getScaleController().setMinScale(0.01f);
-          img.getScaleController().setMaxScale(2.0f);
-          img.setLocalScale(new Vector3(2f, 2f, 2f));
-          img.setParent(anchorNode);
-          img.setRenderable(imgRenderable);
+            // Create the Anchor.
+            Anchor anchor = hitResult.createAnchor();
+            AnchorNode anchorNode = new AnchorNode(anchor);
+            anchorNode.setName("left top");
+            anchorNode.setParent(arFragment.getArSceneView().getScene());
+            //Hardcoded andhors
+            // Create the transformable andy and add it to the anchor.
+            TransformableNode img = new TransformableNode(arFragment.getTransformationSystem());
+            img.getScaleController().setMinScale(0.01f);
+            img.getScaleController().setMaxScale(2.0f);
+            img.setLocalScale(new Vector3(2f, 2f, 2f));
+            img.setParent(anchorNode);
+            img.setRenderable(imgRenderable);
 
-          ViewRenderable.builder()
-            .setView(arFragment.getContext(), view)
-            .build()
-            .thenAccept(
-                (renderable) -> {
-                    imgRenderable = renderable;
-
-              // Change the rotation
-              if (plane.getType() ==  Plane.Type.VERTICAL) {
-                  float[] yAxis = plane.getCenterPose().getYAxis();
-                  Vector3 planeNormal = new Vector3(yAxis[0], yAxis[1], yAxis[2]);
-                  Quaternion upQuat = Quaternion.lookRotation(planeNormal, Vector3.up());
-                  img.setWorldRotation(upQuat);
-                   }
-                });
+            // Change the rotation
+            if (plane.getType() ==  Plane.Type.VERTICAL) {
+                float[] yAxis = plane.getCenterPose().getYAxis();
+                Vector3 planeNormal = new Vector3(yAxis[0], yAxis[1], yAxis[2]);
+                Quaternion upQuat = Quaternion.lookRotation(planeNormal, Vector3.up());
+                img.setWorldRotation(upQuat);
+            }
 
             img.select();
 
@@ -267,7 +257,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
                   if(itemNumber < 0){
                       itemNumber = 23;
                   }
-                 Picasso.get().load(self.shoes.get(itemNumber).imageLink).into(middleImg);
+                 pullIntoView();
                  imgText.setText(shoes.get(itemNumber).name + "\n Price: $" + Integer.toString(shoes.get(itemNumber).cost));
               });
       // Initialize the "right" button.
@@ -277,8 +267,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
           if(itemNumber > 23){
               itemNumber = 0;
           }
-          String imageUrl = shoes.get(itemNumber).imageLink;
-          Picasso.get().load(imageUrl).into(middleImg);
+          pullIntoView();
           imgText.setText(shoes.get(itemNumber).name + "\n Price: $" + Integer.toString(shoes.get(itemNumber).cost));
       });
       Button deletebutton = findViewById(R.id.delete_button);
@@ -292,6 +281,21 @@ public class HelloSceneformActivity extends AppCompatActivity {
       ImageView middleImg = findViewById(R.id.middle_img);
       TextView imgText = findViewById(R.id.item_text);
       Picasso.get().load(this.shoes.get(this.itemNumber).imageLink).into(middleImg);
+      ImageView view = (ImageView) getLayoutInflater().inflate(R.layout.test_view, null);
+
+      Picasso.get().load(shoes.get(itemNumber).imageLink).into(view);
+
+
+      ViewRenderable.builder()
+              .setView(arFragment.getContext(), view)
+              .build()
+              .thenAccept(
+                      (renderable) -> {
+                          imgRenderable = renderable;
+
+
+                      });
+
       Log.i("FOOBAR", this.shoes.toString());
       Log.i("FOOBAR", this.shoes.get(this.itemNumber).imageLink);
   }
