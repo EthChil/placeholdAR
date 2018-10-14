@@ -30,6 +30,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.ar.core.Anchor;
@@ -62,6 +65,8 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import com.squareup.picasso.Picasso;
 
 /**
  * This is an example activity that uses the Sceneform UX package to make common AR tasks easier.
@@ -151,20 +156,20 @@ public class HelloSceneformActivity extends AppCompatActivity {
         // Get 5 models without registration / key
         // Register for free to get access to 200 Wayfair models
         RetrofitClientInstance.getRetrofitInstance(EMAIL, API_KEY)
-                .create(WayfairApiRequest.class)
-                .listModels()
-                .enqueue(new Callback<List<ProductInfoSchema>>() {
-                    @Override
-                    public void onResponse(Call<List<ProductInfoSchema>> call, Response<List<ProductInfoSchema>> response) {
-                        // Step 2: Get 3D assets and create a renderable
-                        get3DAsset(response.body().get(0).getModel().getGlbUrl());
-                    }
+            .create(WayfairApiRequest.class)
+            .listModels()
+            .enqueue(new Callback<List<ProductInfoSchema>>() {
+                @Override
+                public void onResponse(Call<List<ProductInfoSchema>> call, Response<List<ProductInfoSchema>> response) {
+                    // Step 2: Get 3D assets and create a renderable
+                    get3DAsset(response.body().get(0).getModel().getGlbUrl());
+                }
 
-                    @Override
-                    public void onFailure(Call<List<ProductInfoSchema>> call, Throwable t) {
-                        Log.e("Api request failed", t.getMessage());
-                    }
-                });
+                @Override
+                public void onFailure(Call<List<ProductInfoSchema>> call, Throwable t) {
+                    Log.e("Api request failed", t.getMessage());
+                }
+            });
 
         // Step 4: Add interactions to the Scene
         arFragment.setOnTapArPlaneListener(
@@ -202,6 +207,18 @@ public class HelloSceneformActivity extends AppCompatActivity {
 
                     checkUpdatedAnchor();
                 });
+        // Initialize the "left" button.
+        Button leftButton = findViewById(R.id.left_button);
+        leftButton.setOnClickListener(
+            (unusedView) -> {
+            });
+        // Initialize the "right" button.
+        Button rightButton = findViewById(R.id.right_button);
+        rightButton.setOnClickListener(
+            (unusedView) -> {
+            });
+        ImageView middleImg = findViewById(R.id.middle_img);
+        Picasso.get().load("https://icon2.kisspng.com/20171221/fsq/cat-5a3c42efbe6bf2.68329414151389873578.jpg").into(middleImg);
     }
 
     private void checkUpdatedAnchor() {

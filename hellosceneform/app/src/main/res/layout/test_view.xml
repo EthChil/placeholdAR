@@ -3,6 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/imageCard"
     android:layout_width="123dp"
+<<<<<<< HEAD
     android:layout_height="197dp"
-    android:src="@drawable/niketrans"
-    tools:srcCompat="@tools:sample/backgrounds/scenic" />
+    android:src="@drawable/shoes"
+    tools:srcCompat="@tools:sample/backgrounds/scenic[3]" />
+
+=======
+    android:layout_height="90dp"
+    android:src="@drawable/supremetrans" />
+>>>>>>> d9bf67859270fa99c353d12d37b17f42e148645a
