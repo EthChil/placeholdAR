@@ -26,6 +26,7 @@ public class GrabShoe {
                 Log.d("asd", "---------------- this is response : " + response);
                 try {
                     JSONObject serverResp = new JSONObject(response.toString());
+                    System.out.print("POTATO: starting tempShoe logs");
                     for(int i = 0; i < 25; i++){
                         Shoe tempShoe = new Shoe();
                         tempShoe.name = serverResp.getString("shortDescription");
@@ -34,6 +35,8 @@ public class GrabShoe {
                         tempShoe.imageLink = HttpUtils.genImageUrl(tempShoe.name);
                         shoes[i] = tempShoe;
                     }
+
+                    System.out.print("POTATO: finished tempShoe logs");
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
