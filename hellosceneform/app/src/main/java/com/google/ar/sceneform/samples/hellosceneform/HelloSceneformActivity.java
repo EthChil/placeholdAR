@@ -28,6 +28,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.ar.core.Anchor;
@@ -223,18 +224,14 @@ public class HelloSceneformActivity extends AppCompatActivity {
                 modelNode.getScaleController().setEnabled(false);
                 modelNode.select();
 
-
                 // Inorder to hide the built in shadow plane for Wayfair models
                 // This is not required for other models
                 modelRenderable.setMaterial(modelRenderable.getSubmeshCount() - 1, cubeRenderable.getMaterial());
               }
-        
-
-
       });
 
-
        ImageView middleImg = findViewById(R.id.middle_img);
+       TextView imgText = findViewById(R.id.item_text);
         Picasso.get().load("https://icon2.kisspng.com/20171221/fsq/cat-5a3c42efbe6bf2.68329414151389873578.jpg").into(middleImg);
         for(int i = 0; i < 25; i++){
             if(allShoes[i] == null){
@@ -250,6 +247,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
                       itemNumber = 23;
                   }
                   Picasso.get().load(allShoes[itemNumber].imageLink).into(middleImg);
+                  imgText.setText(Integer.toString(itemNumber));
               });
       // Initialize the "right" button.
       Button rightButton = findViewById(R.id.right_button);
@@ -261,6 +259,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
                       itemNumber = 0;
                   }
                   Picasso.get().load(allShoes[itemNumber].imageLink).into(middleImg);
+                  imgText.setText(Integer.toString(itemNumber));
               });
       Button deletebutton = findViewById(R.id.delete_button);
       deletebutton.setOnClickListener(
