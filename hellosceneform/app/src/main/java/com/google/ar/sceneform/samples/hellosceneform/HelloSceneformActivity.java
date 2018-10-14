@@ -156,9 +156,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
     HelloSceneformActivity self = this;
 
     setupRetrofit();
-    if (productType == ProductType.SHOE) {
-        createShoeService();
-    }
+    createShoeService();
 
     if (!checkIsSupportedDeviceOrFinish(this)) {
       return;
@@ -287,10 +285,10 @@ public class HelloSceneformActivity extends AppCompatActivity {
           });
 
         Button cyclebutton = findViewById(R.id.cycle_button);
-        deletebutton.setOnClickListener(
+        cyclebutton.setOnClickListener(
                 (unused) -> {
-                    if()
-
+                    productType = ProductType.values()[(productType.ordinal() + 1) % ProductType.values().length];
+                    pullIntoView();
                 });
   }
 
@@ -298,10 +296,16 @@ public class HelloSceneformActivity extends AppCompatActivity {
       ImageView middleImg = findViewById(R.id.middle_img);
       TextView imgText = findViewById(R.id.item_text);
         if (productType == ProductType.WAYFAIR) {
+            if (wayfair == null) {
+                return;
+            }
             get3DAsset(wayfair.get(itemNumber).getModel().getGlbUrl());
             Picasso.get().load(wayfair.get(this.itemNumber).getThumbnailImageUrl()).into(middleImg);
             imgText.setText(wayfair.get(itemNumber).getProducName() + "\n Price: $" + wayfair.get(itemNumber).getSalePrice());
         } else {
+            if (shoes == null) {
+                return;
+            }
             imgText.setText(shoes.get(itemNumber).name + "\n Price: $" + Integer.toString(shoes.get(itemNumber).cost));
             Picasso.get().load(this.shoes.get(this.itemNumber).imageLink).into(middleImg);
             ImageView view = (ImageView) getLayoutInflater().inflate(R.layout.test_view, null);
