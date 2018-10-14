@@ -62,8 +62,9 @@ public class HelloSceneformActivity extends AppCompatActivity {
   private static final String TAG = HelloSceneformActivity.class.getSimpleName();
   private static final double MIN_OPENGL_VERSION = 3.0;
   private ArFragment arFragment;
-  private ModelRenderable andyRenderable;
   private ViewRenderable imgRenderable;
+
+  //Handle shoes
   private GrabShoe shoeMaster = new GrabShoe();
   private Shoe allShoes[] = shoeMaster.shoes;
 
@@ -105,19 +106,6 @@ public class HelloSceneformActivity extends AppCompatActivity {
     arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
 
 
-//      ModelRenderable.builder()
-//        .setSource(this, R.raw.untitled)
-//        .build()
-//        .thenAccept(renderable -> andyRenderable = renderable)
-//        .exceptionally(
-//            throwable -> {
-//              Toast toast =
-//                  Toast.makeText(this, "Unable to load andy renderable", Toast.LENGTH_LONG);
-//              toast.setGravity(Gravity.CENTER, 0, 0);
-//              toast.show();
-//              return null;
-//            });
-
         ViewRenderable.builder()
                 .setView(arFragment.getContext(), R.layout.test_view)
                 .build()
@@ -143,6 +131,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
           // Create the Anchor.
           Anchor anchor = hitResult.createAnchor();
           AnchorNode anchorNode = new AnchorNode(anchor);
+          anchorNode.setName("left top");
           anchorNode.setParent(arFragment.getArSceneView().getScene());
 
           // Create the transformable andy and add it to the anchor.
