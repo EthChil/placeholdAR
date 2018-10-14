@@ -232,7 +232,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
 
        ImageView middleImg = findViewById(R.id.middle_img);
        TextView imgText = findViewById(R.id.item_text);
-        Picasso.get().load("https://icon2.kisspng.com/20171221/fsq/cat-5a3c42efbe6bf2.68329414151389873578.jpg").into(middleImg);
+        Picasso.get().load(allShoes[0].imageLink).into(middleImg);
         for(int i = 0; i < 25; i++){
             if(allShoes[i] == null){
                 Log.i("policemenaregay", "ethan succs"+Integer.toString(i));
@@ -241,25 +241,23 @@ public class HelloSceneformActivity extends AppCompatActivity {
       Button leftButton = findViewById(R.id.left_button);
       leftButton.setOnClickListener(
               (unusedView) -> {
-                  if(itemNumber > 0){
-                      itemNumber --;
-                  } else {
+                  itemNumber --;
+                  if(itemNumber < 0){
                       itemNumber = 23;
                   }
                   Picasso.get().load(allShoes[itemNumber].imageLink).into(middleImg);
-                  imgText.setText(Integer.toString(itemNumber));
+                  imgText.setText("Product: " + Integer.toString(itemNumber) + "\n Price: ");
               });
       // Initialize the "right" button.
       Button rightButton = findViewById(R.id.right_button);
       rightButton.setOnClickListener(
               (unusedView) -> {
-                  if(itemNumber < 24){
-                      itemNumber ++;
-                  } else {
+                  itemNumber ++;
+                  if(itemNumber > 23){
                       itemNumber = 0;
                   }
                   Picasso.get().load(allShoes[itemNumber].imageLink).into(middleImg);
-                  imgText.setText(Integer.toString(itemNumber));
+                  imgText.setText("Product: " + Integer.toString(itemNumber) + "\n Price: ");
               });
       Button deletebutton = findViewById(R.id.delete_button);
       deletebutton.setOnClickListener(
