@@ -14,10 +14,11 @@ import retrofit2.Call;
 
 
 import static com.loopj.android.http.AsyncHttpClient.LOG_TAG;
+import static com.loopj.android.http.AsyncHttpClient.log;
 
 public class GrabShoe {
 
-    Shoe shoes[] = new Shoe[25];
+    public Shoe shoes[] = new Shoe[25];
 
 
     private void getShoes() {
@@ -34,6 +35,7 @@ public class GrabShoe {
                     System.out.print("POTATO: starting tempShoe logs");
                     for (int i = 0; i < 25; i++) {
                         Shoe tempShoe = new Shoe();
+                        Log.i("POTATO", serverResp.getString("shortDescription"));
                         tempShoe.name = serverResp.getString("shortDescription");
                         tempShoe.cost = serverResp.getInt("retailPrice");
 
