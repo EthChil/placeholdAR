@@ -72,7 +72,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
 
   private Session session;
 
-    private void onClear() {
+    public void onClear() {
         List<Node> children = new ArrayList<>(arFragment.getArSceneView().getScene().getChildren());
         for (Node node : children) {
             if (node instanceof AnchorNode) {
@@ -127,7 +127,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
           if (imgRenderable == null) {
             return;
           }
-          onClear();
+
           // Create the Anchor.
           Anchor anchor = hitResult.createAnchor();
           AnchorNode anchorNode = new AnchorNode(anchor);
@@ -175,6 +175,12 @@ public class HelloSceneformActivity extends AppCompatActivity {
         rightButton.setOnClickListener(
                 (unusedView) -> {
                     Picasso.get().load("https://png.icons8.com/windows/1600/long-arrow-right.png").into(middleImg);
+                });
+
+        Button deletebutton = findViewById(R.id.delete_button);
+        deletebutton.setOnClickListener(
+                (unusedView) -> {
+                    onClear();
                 });
   }
 
