@@ -5,6 +5,9 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 public class HttpUtils {
+
+
+
     private static final String BASE_URL = "https://gateway.stockx.com/public/";
 
     private static AsyncHttpClient client = new AsyncHttpClient();
