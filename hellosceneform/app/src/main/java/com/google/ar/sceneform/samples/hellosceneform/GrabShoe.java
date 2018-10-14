@@ -53,9 +53,16 @@ public class GrabShoe {
             }
 
             @Override
+<<<<<<< HEAD
             public void onFailure (Call<StockX> call, Throwable t){
                 Log.i(LOG_TAG, t.getMessage());
             }
+=======
+            public void onFailure(retrofit2.Call<StockX> call, Throwable t) {
+                Log.i(LOG_TAG, t.getMessage());
+            }
+        });
+>>>>>>> 3dbe7548fca98034431996195d53ba28e98bc0fe
 
         });
     }
@@ -97,5 +104,4 @@ public class GrabShoe {
 //        frame.add(label);
 //
 //    }
-
 
