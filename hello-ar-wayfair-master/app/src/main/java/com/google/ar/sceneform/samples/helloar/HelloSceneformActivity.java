@@ -22,6 +22,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.GuardedBy;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
@@ -33,6 +37,7 @@ import com.google.ar.core.Config;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
 import com.google.ar.core.Session;
+import com.google.ar.core.TrackingState;
 import com.google.ar.core.exceptions.CameraNotAvailableException;
 import com.google.ar.core.exceptions.UnavailableApkTooOldException;
 import com.google.ar.core.exceptions.UnavailableArcoreNotInstalledException;
@@ -45,6 +50,12 @@ import com.google.ar.sceneform.samples.helloar.wayfairapi.request.WayfairApiRequ
 import com.google.ar.sceneform.samples.helloar.wayfairapi.response.ProductInfoSchema;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -67,7 +78,23 @@ public class HelloSceneformActivity extends AppCompatActivity {
     private ModelRenderable modelRenderable;
     private ModelRenderable cubeRenderable;
 
+    private Anchor anchor;
     private Session session;
+    private StorageManager storageManager;
+
+    private final Object singleTapAnchorLock = new Object();
+
+    @GuardedBy("singleTapAnchorLock")
+    private AppAnchorState appAnchorState = AppAnchorState.NONE;
+
+    private enum AppAnchorState {
+        NONE,
+        HOSTING,
+        HOSTED,
+        RESOLVING
+    }
+
+    private Handler handler;
 
     /**
      * Returns false and displays an error message if Sceneform can not run, true if Sceneform can run
@@ -113,6 +140,12 @@ public class HelloSceneformActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ux);
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
 
+        // Set up Firebase
+        storageManager = new StorageManager(this);
+
+        // Handler
+        handler = new Handler();
+
         // Make Wayfair Api call
         // API DOCS: bit.ly/wayfair3dapi
         // Get 5 models without registration / key
@@ -143,7 +176,11 @@ public class HelloSceneformActivity extends AppCompatActivity {
                     // Step 3: Build the Scene
                     // Create the Anchor.
                     Anchor anchor = hitResult.createAnchor();
-                    session.hostCloudAnchor(anchor);
+                    anchor = session.hostCloudAnchor(anchor);
+
+                    setNewAnchor(anchor);
+
+                    appAnchorState = AppAnchorState.HOSTING;
                     // You can get the id and put it in firebase
                     AnchorNode anchorNode = new AnchorNode(anchor);
                     anchorNode.setParent(arFragment.getArSceneView().getScene());
@@ -162,7 +199,38 @@ public class HelloSceneformActivity extends AppCompatActivity {
                     // Inorder to hide the built in shadow plane for Wayfair models
                     // This is not required for other models
                     modelRenderable.setMaterial(modelRenderable.getSubmeshCount() - 1, cubeRenderable.getMaterial());
+
+                    checkUpdatedAnchor();
                 });
+    }
+
+    private void checkUpdatedAnchor() {
+        synchronized (singleTapAnchorLock) {
+            if (appAnchorState != AppAnchorState.HOSTING) {
+                return;
+            }
+            Anchor.CloudAnchorState cloudState = anchor.getCloudAnchorState();
+            if (!cloudState.isError() && cloudState == Anchor.CloudAnchorState.SUCCESS) {
+                appAnchorState = AppAnchorState.HOSTED;
+                storageManager.store(anchor.getCloudAnchorId());
+            }
+        }
+    }
+
+    @GuardedBy("singleTapAnchorLock")
+    private void setNewAnchor(@Nullable Anchor newAnchor) {
+        if (anchor != null) {
+            anchor.detach();
+        }
+        anchor = newAnchor;
+        appAnchorState = AppAnchorState.NONE;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        handler.postDelayed(new TaskRunnable(), 1000);
     }
 
     @Override
@@ -242,5 +310,30 @@ public class HelloSceneformActivity extends AppCompatActivity {
                             toast.show();
                             return null;
                         });
+    }
+
+    class TaskRunnable implements Runnable {
+        @Override
+        public void run() {
+            synchronized (singleTapAnchorLock) {
+                storageManager.getAnchors(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+                            Anchor resolvedAnchor = session.resolveCloudAnchor(child.getKey());
+                            setNewAnchor(resolvedAnchor);
+                        }
+                        appAnchorState = AppAnchorState.RESOLVING;
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.e("Cancelled", databaseError.getMessage());
+                    }
+                });
+
+            }
+            handler.postDelayed(this, 1000);
+        }
     }
 }
