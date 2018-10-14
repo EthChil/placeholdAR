@@ -1,18 +1,12 @@
-package com.google.ar.sceneform.samples.hellosceneform;
+package com.google.ar.sceneform.samples.hellosceneform.REST;
 
-import android.preference.PreferenceActivity;
 import android.util.Log;
 
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
+import com.google.ar.sceneform.samples.hellosceneform.HttpUtils;
+import com.google.ar.sceneform.samples.hellosceneform.Shoe;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
-import java.net.URI;
-import java.net.URL;
 
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,11 +23,11 @@ public class GrabShoe {
     private void getShoes() {
         StockXinterface service = StockXinterface.retrofit.create(StockXinterface.class);
 
-        retrofit2.Call<StockX> call = service.getShoes();
+        retrofit2.Call<ShoesResponse> call = service.getShoes();
 
-        call.enqueue(new Callback<StockX>() {
+        call.enqueue(new Callback<ShoesResponse>() {
             @Override
-            public void onResponse(retrofit2.Call<StockX> call, Response<StockX> response) {
+            public void onResponse(retrofit2.Call<ShoesResponse> call, Response<ShoesResponse> response) {
                 Log.i(LOG_TAG, "Received response: " + response.toString());
                 try {
                     JSONObject serverResp = new JSONObject(response.toString());
@@ -53,16 +47,9 @@ public class GrabShoe {
             }
 
             @Override
-<<<<<<< HEAD
-            public void onFailure (Call<StockX> call, Throwable t){
+            public void onFailure (Call<ShoesResponse> call, Throwable t){
                 Log.i(LOG_TAG, t.getMessage());
             }
-=======
-            public void onFailure(retrofit2.Call<StockX> call, Throwable t) {
-                Log.i(LOG_TAG, t.getMessage());
-            }
-        });
->>>>>>> 3dbe7548fca98034431996195d53ba28e98bc0fe
 
         });
     }
