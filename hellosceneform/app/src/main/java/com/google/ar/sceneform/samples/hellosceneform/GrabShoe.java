@@ -26,7 +26,7 @@ public class GrabShoe {
                 Log.d("asd", "---------------- this is response : " + response);
                 try {
                     JSONObject serverResp = new JSONObject(response.toString());
-                    Log.i("policemangay","POTATO: starting tempShoe logs");
+                    System.out.print("POTATO: starting tempShoe logs");
                     for(int i = 0; i < 25; i++){
                         Shoe tempShoe = new Shoe();
                         tempShoe.name = serverResp.getString("shortDescription");
@@ -36,7 +36,7 @@ public class GrabShoe {
                         shoes[i] = tempShoe;
                     }
 
-                    Log.i("policemangay", "POTATO: finished tempShoe logs");
+                    System.out.print("POTATO: finished tempShoe logs");
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();

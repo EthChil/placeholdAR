@@ -58,8 +58,16 @@ android {
 }
 
 dependencies {
+    // Retrofit & OkHttp
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+
+    // JSON Converter
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     // Provides ArFragment, and other Sceneform UX resources:
-    implementation 'com.google.ar.sceneform.ux:sceneform-ux:1.5.0'
+    implementation "com.google.ar.sceneform.ux:sceneform-ux:1.5.0"
+
+    // For runtime .glTF / .glb asset loading
+    implementation "com.google.ar.sceneform:assets:1.5.0"
     // Use the Sceneform Ux Package built from the source files included in the sceneformux folder.
     //api project(":sceneformux")
     // Alternatively, use ArSceneView without the UX dependency.
@@ -89,3 +97,7 @@ sceneform.asset('sampledata/models/untitled.obj',
         'sampledata/models/untitled.sfa',
         'src/main/assets/untitled')
 
+sceneform.asset('sampledata/models/cube.gltf',
+        'default',
+        'sampledata/models/cube.sfa',
+        'src/main/res/raw/cube')
