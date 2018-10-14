@@ -263,10 +263,10 @@ public class HelloSceneformActivity extends AppCompatActivity {
                   // TODO: REPLACE
 //                  Picasso.get().load(.this.shoes.get(itemNumber).imageLink).into(middleImg);
 //                  imgText.setText("Product: " + Integer.toString(itemNumber) + "\n Price: ");
-//              });
+              });
       // Initialize the "right" button.
       Button rightButton = findViewById(R.id.right_button);
-      rightButton.setOnClickListener((_) -> {
+      rightButton.setOnClickListener((unused) -> {
                   itemNumber ++;
                   if(itemNumber > 23){
                       itemNumber = 0;
@@ -279,10 +279,11 @@ public class HelloSceneformActivity extends AppCompatActivity {
               });
       Button deletebutton = findViewById(R.id.delete_button);
       deletebutton.setOnClickListener(
-              (_) -> {
+              (unused) -> {
                   onClear();
               });
   }
+
 
   public StockXService createShoeService() {
       StockXService service = retrofit.create(StockXService.class);
