@@ -254,11 +254,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
         } else {
             Log.i("FOOBAR", self.shoes.toString());
         }
-//        for(int i = 0; i < 25; i++){
-//            if(shoes.get(i) == null){
-//                Log.i("policemenaregay", "ethan succs"+Integer.toString(i));
-//            }
-//        }
+
       Button leftButton = findViewById(R.id.left_button);
       leftButton.setOnClickListener(
               (unusedView) -> {
@@ -300,9 +296,9 @@ public class HelloSceneformActivity extends AppCompatActivity {
             if (wayfair == null) {
                 return;
             }
-            get3DAsset(wayfair.get(itemNumber).getModel().getGlbUrl());
-            Picasso.get().load(wayfair.get(this.itemNumber).getThumbnailImageUrl()).into(middleImg);
-            imgText.setText(wayfair.get(itemNumber).getProducName() + "\n Price: $" + wayfair.get(itemNumber).getSalePrice());
+            get3DAsset(wayfair.get(itemNumber + 30).getModel().getGlbUrl());
+            Picasso.get().load(wayfair.get(this.itemNumber + 30).getThumbnailImageUrl()).into(middleImg);
+            imgText.setText(wayfair.get(itemNumber + 30).getProducName() + "\n Price: $" + wayfair.get(itemNumber + 30).getSalePrice());
         } else if (productType == ProductType.SHOE) {
             if (shoes == null) {
                 return;
@@ -324,8 +320,6 @@ public class HelloSceneformActivity extends AppCompatActivity {
 
                             });
 
-            Log.i("FOOBAR", this.shoes.toString());
-            Log.i("FOOBAR", this.shoes.get(this.itemNumber).imageLink);
         } else {
             if (tees == null) {
                 return;
