@@ -6,5 +6,4 @@ public class Shoe {
     public int cost;
     public String name;
 
-
 }
