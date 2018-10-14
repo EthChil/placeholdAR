@@ -22,7 +22,7 @@ import retrofit2.Call;
 import static com.loopj.android.http.AsyncHttpClient.LOG_TAG;
 
 public class GrabShoe {
-
+    
         Shoe shoes[] = new Shoe[25];
 
 
@@ -49,6 +49,7 @@ public class GrabShoe {
                     }catch(JSONException e){
 
                     }
+
 
                 }
 

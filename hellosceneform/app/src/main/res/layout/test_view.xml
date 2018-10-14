@@ -3,5 +3,4 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/imageCard"
     android:layout_width="123dp"
-    android:layout_height="90dp"
-    android:src="@drawable/supremetrans"/>
+    android:layout_height="90dp"/>
