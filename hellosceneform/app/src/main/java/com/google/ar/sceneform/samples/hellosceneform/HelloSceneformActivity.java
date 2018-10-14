@@ -40,6 +40,7 @@ import com.google.ar.sceneform.math.Quaternion;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.rendering.ViewRenderable;
+import com.google.ar.sceneform.samples.hellosceneform.REST.GrabShoe;
 import com.google.ar.sceneform.samples.hellosceneform.wayfairapi.RetrofitClientInstance;
 import com.google.ar.sceneform.samples.hellosceneform.wayfairapi.request.WayfairApiRequest;
 import com.google.ar.sceneform.samples.hellosceneform.wayfairapi.response.ProductInfoSchema;
