@@ -22,41 +22,42 @@ import retrofit2.Call;
 import static com.loopj.android.http.AsyncHttpClient.LOG_TAG;
 
 public class GrabShoe {
-    
-        Shoe shoes[] = new Shoe[25];
+
+    Shoe shoes[] = new Shoe[25];
 
 
-        private void getShoes() {
-            StockXinterface service = StockXinterface.retrofit.create(StockXinterface.class);
+    private void getShoes() {
+        StockXinterface service = StockXinterface.retrofit.create(StockXinterface.class);
 
-            retrofit2.Call<StockX> call = service.getShoes();
+        retrofit2.Call<StockX> call = service.getShoes();
 
-            call.enqueue(new Callback<StockX>() {
-                @Override
-                public void onResponse(retrofit2.Call<StockX> call, Response<StockX> response) {
-                    Log.i(LOG_TAG, "Received response: " + response.toString());
-                    try {
-                        JSONObject serverResp = new JSONObject(response.toString());
-                        System.out.print("POTATO: starting tempShoe logs");
-                        for (int i = 0; i < 25; i++) {
-                            Shoe tempShoe = new Shoe();
-                            tempShoe.name = serverResp.getString("shortDescription");
-                            tempShoe.cost = serverResp.getInt("retailPrice");
+        call.enqueue(new Callback<StockX>() {
+            @Override
+            public void onResponse(retrofit2.Call<StockX> call, Response<StockX> response) {
+                Log.i(LOG_TAG, "Received response: " + response.toString());
+                try {
+                    JSONObject serverResp = new JSONObject(response.toString());
+                    System.out.print("POTATO: starting tempShoe logs");
+                    for (int i = 0; i < 25; i++) {
+                        Shoe tempShoe = new Shoe();
+                        tempShoe.name = serverResp.getString("shortDescription");
+                        tempShoe.cost = serverResp.getInt("retailPrice");
 
-                            tempShoe.imageLink = HttpUtils.genImageUrl(tempShoe.name);
-                            shoes[i] = tempShoe;
-                        }
-                    }catch(JSONException e) {
+                        tempShoe.imageLink = HttpUtils.genImageUrl(tempShoe.name);
+                        shoes[i] = tempShoe;
                     }
-
-                @Override
-                public void onFailure(retrofit2.Call<StockX> call, Throwable t) {
-                    Log.i(LOG_TAG, t.getMessage());
+                } catch (JSONException e) {
                 }
+
+
+            }
+
+            @Override
+            public void onFailure (Call<StockX> call, Throwable t){
+                Log.i(LOG_TAG, t.getMessage());
             }
 
         });
-
     }
 }
 

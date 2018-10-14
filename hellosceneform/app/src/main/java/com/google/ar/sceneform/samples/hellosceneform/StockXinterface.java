@@ -18,5 +18,4 @@ public interface StockXinterface {
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
-
 }
