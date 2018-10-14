@@ -8,15 +8,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 
-public interface StockXinterface {
+public interface StockXService {
 
     @Headers("x-api-key: B1sR9t386d6UVO6aI7KRf91gLaUywqEK1TLBGsXv")
     @GET("browse?limit=25")
     Call<ShoesResponse> getShoes();
 
-    Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("https://gateway.stockx.com/public/v1/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
 
 }

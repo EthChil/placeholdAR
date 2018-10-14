@@ -6,4 +6,9 @@ public class Shoe {
     public int cost;
     public String name;
 
+    public Shoe(String imageLink, int cost, String name) {
+        this.imageLink = imageLink;
+        this.cost = cost;
+        this.name = name;
+    }
 }

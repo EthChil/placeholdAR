@@ -42,6 +42,9 @@ import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.samples.hellosceneform.REST.GrabShoe;
+import com.google.ar.sceneform.samples.hellosceneform.REST.Product;
+import com.google.ar.sceneform.samples.hellosceneform.REST.ShoesResponse;
+import com.google.ar.sceneform.samples.hellosceneform.REST.StockXService;
 import com.google.ar.sceneform.samples.hellosceneform.wayfairapi.RetrofitClientInstance;
 import com.google.ar.sceneform.samples.hellosceneform.wayfairapi.request.WayfairApiRequest;
 import com.google.ar.sceneform.samples.hellosceneform.wayfairapi.response.ProductInfoSchema;
@@ -55,6 +58,10 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+import static com.loopj.android.http.AsyncHttpClient.LOG_TAG;
 
 
 /**
@@ -72,11 +79,21 @@ public class HelloSceneformActivity extends AppCompatActivity {
   private ModelRenderable modelRenderable;
   private ModelRenderable cubeRenderable;
   //Handle shoes
-  private GrabShoe shoeMaster = new GrabShoe();
-  private Shoe allShoes[] = shoeMaster.shoes;
+//  private GrabShoe shoeMaster = new GrabShoe();
+//  private Shoe allShoes[] = shoeMaster.getShoeArr();
 
   //Counter bois
+
+    Retrofit retrofit;
   private int itemNumber = 0;
+    private ArrayList<Shoe> shoes;
+
+  public void setupRetrofit() {
+      retrofit = new Retrofit.Builder()
+              .baseUrl("https://gateway.stockx.com/public/v1/")
+              .addConverterFactory(GsonConverterFactory.create())
+              .build();
+  }
 
     /**
      * Returns false and displays an error message if Sceneform can not run, true if Sceneform can run
@@ -126,6 +143,9 @@ public class HelloSceneformActivity extends AppCompatActivity {
   // FutureReturnValueIgnored is not valid
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    setupRetrofit();
+    createShoeService();
 
     if (!checkIsSupportedDeviceOrFinish(this)) {
       return;
@@ -225,12 +245,14 @@ public class HelloSceneformActivity extends AppCompatActivity {
 
        ImageView middleImg = findViewById(R.id.middle_img);
        TextView imgText = findViewById(R.id.item_text);
-        Picasso.get().load(allShoes[0].imageLink).into(middleImg);
-        for(int i = 0; i < 25; i++){
-            if(allShoes[i] == null){
-                Log.i("policemenaregay", "ethan succs"+Integer.toString(i));
-            }
-        }
+
+       // TODO: REPLACE
+//        Picasso.get().load(masterItem.get(0).imageLink).into(middleImg);
+//        for(int i = 0; i < 25; i++){
+//            if(allShoes[i] == null){
+//                Log.i("policemenaregay", "ethan succs"+Integer.toString(i));
+//            }
+//        }
       Button leftButton = findViewById(R.id.left_button);
       leftButton.setOnClickListener(
               (unusedView) -> {
@@ -238,25 +260,64 @@ public class HelloSceneformActivity extends AppCompatActivity {
                   if(itemNumber < 0){
                       itemNumber = 23;
                   }
-                  Picasso.get().load(allShoes[itemNumber].imageLink).into(middleImg);
-                  imgText.setText("Product: " + Integer.toString(itemNumber) + "\n Price: ");
-              });
+                  // TODO: REPLACE
+//                  Picasso.get().load(.this.shoes.get(itemNumber).imageLink).into(middleImg);
+//                  imgText.setText("Product: " + Integer.toString(itemNumber) + "\n Price: ");
+//              });
       // Initialize the "right" button.
       Button rightButton = findViewById(R.id.right_button);
-      rightButton.setOnClickListener(
-              (unusedView) -> {
+      rightButton.setOnClickListener((_) -> {
                   itemNumber ++;
                   if(itemNumber > 23){
                       itemNumber = 0;
                   }
-                  Picasso.get().load(allShoes[itemNumber].imageLink).into(middleImg);
-                  imgText.setText("Product: " + Integer.toString(itemNumber) + "\n Price: ");
+                  // TODO: REPLACE
+
+                String imageUrl = shoes.get(0).imageLink;
+                Picasso.get().load(imageUrl).into(middleImg);
+//                  imgText.setText("Product: " + Integer.toString(itemNumber) + "\n Price: ");
               });
       Button deletebutton = findViewById(R.id.delete_button);
       deletebutton.setOnClickListener(
-              (unusedView) -> {
+              (_) -> {
                   onClear();
               });
+  }
+
+  public StockXService createShoeService() {
+      StockXService service = retrofit.create(StockXService.class);
+
+      retrofit2.Call<ShoesResponse> call = service.getShoes();
+
+      call.enqueue(new Callback<ShoesResponse>() {
+
+          @Override
+          public void onResponse(retrofit2.Call<ShoesResponse> call,
+                                 Response<ShoesResponse> response) {
+              List<Product> products = response.body().Products;
+
+              ArrayList shoes = new ArrayList<Shoe>();
+
+              for (int i = 0; i < products.size(); i++) {
+                  Product product = products.get(0);
+
+                  Shoe shoe = new Shoe(
+                          product.shortDescription,
+                          Integer.parseInt(product.retailPrice),
+                          product.shortDescription);
+                  shoes.add(shoe);
+              }
+
+              HelloSceneformActivity.this.shoes = shoes;
+          }
+
+          @Override
+          public void onFailure (Call<ShoesResponse> call, Throwable t){
+              Log.i(LOG_TAG, t.getMessage());
+          }
+
+      });
+      return service;
   }
 
 

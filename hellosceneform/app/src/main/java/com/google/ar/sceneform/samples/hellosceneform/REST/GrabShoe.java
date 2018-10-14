@@ -18,36 +18,22 @@ import static com.loopj.android.http.AsyncHttpClient.log;
 
 public class GrabShoe {
 
-    public Shoe shoes[] = new Shoe[25];
+//    public volatile Shoe shoes[] = new Shoe[25];
 
-
-    public GrabShoe() {
-        StockXinterface service = StockXinterface.retrofit.create(StockXinterface.class);
-
-        retrofit2.Call<ShoesResponse> call = service.getShoes();
-
-        call.enqueue(new Callback<ShoesResponse>() {
-            @Override
-            public void onResponse(retrofit2.Call<ShoesResponse> call, Response<ShoesResponse> response) {
-                for (int i = 0; i < 25; i++) {
-                    Shoe tempShoe = new Shoe();
-                    tempShoe.name = response.body().Products.get(i).shortDescription;
-                    tempShoe.cost = Integer.parseInt(response.body().Products.get(i).retailPrice);
-                    tempShoe.imageLink = HttpUtils.genImageUrl(tempShoe.name);
-                    shoes[i] = tempShoe;
-                }
-            }
-
-            @Override
-            public void onFailure (Call<ShoesResponse> call, Throwable t){
-                Log.i(LOG_TAG, t.getMessage());
-            }
-
-        });
-        try {
-            Thread.sleep(1000);
-        }catch (Exception e){ }
-    }
+//    public void addToIt(String name,int cost, int i){
+//        Shoe tempShoe = new Shoe();
+//        tempShoe.name = name;
+//        tempShoe.cost = cost;
+//        tempShoe.imageLink = HttpUtils.genImageUrl(name);
+//        shoes[i] = tempShoe;
+//    }
+//
+//    public Shoe[] getShoeArr(){
+//        return shoes;
+//    }
+//
+//    public GrabShoe() {
+//    }
 }
 
 
