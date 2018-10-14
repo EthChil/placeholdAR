@@ -133,7 +133,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
           AnchorNode anchorNode = new AnchorNode(anchor);
           anchorNode.setName("left top");
           anchorNode.setParent(arFragment.getArSceneView().getScene());
-
+          //Hardcoded andhors
           // Create the transformable andy and add it to the anchor.
           TransformableNode img = new TransformableNode(arFragment.getTransformationSystem());
           img.getScaleController().setMinScale(0.01f);
