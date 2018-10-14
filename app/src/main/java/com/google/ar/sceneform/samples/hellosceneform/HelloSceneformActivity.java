@@ -129,17 +129,8 @@ public class HelloSceneformActivity extends AppCompatActivity {
       return;
     }
 
-    Shoe shoe = new Shoe();
-    shoe.imageLink = "https://icon2.kisspng.com/20171221/fsq/cat-5a3c42efbe6bf2.68329414151389873578.jpg";
-    allShoes = new Shoe[25];
-    allShoes[0] = shoe;
-
         setContentView(R.layout.activity_ux);
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
-
-        ImageView view = (ImageView) getLayoutInflater().inflate(R.layout.test_view, null);
-
-        Picasso.get().load(allShoes[itemNumber].imageLink).into(view);
 
         // Make Wayfair Api call
     // API DOCS: bit.ly/wayfair3dapi
