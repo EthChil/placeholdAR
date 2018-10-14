@@ -47,6 +47,27 @@
         android:layout_height="wrap_content"
         android:text="@string/right_button_string"/>
   </LinearLayout>
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+    <Button
+        android:id="@+id/delete_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Clear"/>
+
+    <Button
+        android:id="@+id/cycle_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cycle"
+        android:gravity="center"
+        android:layout_marginLeft="210dp"/>
+
+
+  </LinearLayout>
   <TextView
       android:id="@+id/item_text"
       android:layout_width="wrap_content"
@@ -55,10 +76,6 @@
       android:layout_centerHorizontal="true"
       android:gravity="center"> </TextView>
 
-  <Button
-      android:id="@+id/delete_button"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="DELET"/>
+
 
 </RelativeLayout>

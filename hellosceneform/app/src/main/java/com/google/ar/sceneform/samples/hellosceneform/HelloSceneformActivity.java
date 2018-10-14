@@ -88,6 +88,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
     Retrofit retrofit;
     private int itemNumber = 0;
     private ArrayList<Shoe> shoes = new ArrayList<Shoe>();
+    private ArrayList<Shoe> tees = new ArrayList<Shoe>();
 
   public void setupRetrofit() {
       retrofit = new Retrofit.Builder()
@@ -275,6 +276,13 @@ public class HelloSceneformActivity extends AppCompatActivity {
           (unused) -> {
               onClear();
           });
+
+        Button cyclebutton = findViewById(R.id.cycle_button);
+        deletebutton.setOnClickListener(
+                (unused) -> {
+                    if()
+
+                });
   }
 
   public void pullIntoView() {
@@ -314,6 +322,8 @@ public class HelloSceneformActivity extends AppCompatActivity {
               List<Product> products = response.body().Products;
 
               ArrayList shoes = new ArrayList<Shoe>();
+              ArrayList tees = new ArrayList<Shoe>();
+
 
               for (int i = 0; i < products.size(); i++) {
                   Product product = products.get(i);
@@ -323,16 +333,59 @@ public class HelloSceneformActivity extends AppCompatActivity {
                           Integer.parseInt(product.retailPrice),
                           product.shortDescription);
                   shoes.add(shoe);
+
+                  Shoe tee1 =  new Shoe(
+                          "https://stockx.imgix.net/products/streetwear/Supreme-Cat-in-the-Hat-Hooded-Sweatshirt-Heather-Grey.jpg?fit=fill&bg=FFFFFF&w=1400&h=1000&auto=format,compress&trim=color&q=90",
+                          215,
+                          "Supreme Cat In the Hat Hoodie");
+
+                  Shoe tee2 =  new Shoe(
+                          "https://stockx.imgix.net/products/streetwear/Supreme-GORE-TEX-Court-Jacket-White.jpg?fit=fill&bg=FFFFFF&w=1400&h=1000&auto=format,compress&trim=color&q=90",
+                          478,
+                          "Supreme GORE-TEX Court Jacket White");
+
+                  Shoe tee3 =  new Shoe(
+                          "https://stockx.imgix.net/products/streetwear/Supreme-Cat-in-the-Hat-Hooded-Sweatshirt-Bright-Royal.jpg?fit=fill&bg=FFFFFF&w=1400&h=1000&auto=format,compress&trim=color&q=90",
+                          375,
+                          "Supreme Cat In The Hat Hoodie Blue");
+
+                  Shoe tee4 =  new Shoe(
+                          "https://stockx.imgix.net/products/streetwear/Nikelab-x-OFF-WHITE-Mercurial-NRG-X-Hoodie-Black.jpg?fit=fill&bg=FFFFFF&w=1400&h=1000&auto=format,compress&trim=color&q=90",
+                          579,
+                          "Nikelab x OFF-WHITE Mercurial NRG X Hoodie Black");
+
+                  Shoe tee5 =  new Shoe(
+                          "https://stockx.imgix.net/products/streetwear/Supreme-Nike-Crewneck-Burgundy.jpg?fit=fill&bg=FFFFFF&w=1400&h=1000&auto=format,compress&trim=color&q=90",
+                          149,
+                          "Supreme Nike Crewneck Burgundy");
+
+                  Shoe tee6 =  new Shoe(
+                          "https://stockx.imgix.net/products/streetwear/Supreme-Group-Tee-White.jpg?fit=fill&bg=FFFFFF&w=1400&h=1000&auto=format,compress&trim=color&q=90",
+                          58,
+                          "Supreme Group Tee White\n");
+
+                  tees.add(tee1);
+                  tees.add(tee2);
+                  tees.add(tee3);
+                  tees.add(tee4);
+                  tees.add(tee5);
+                  tees.add(tee6);
+
               }
 
               self.shoes = shoes;
               self.pullIntoView();
+
+
           }
 
           @Override
           public void onFailure (Call<ShoesResponse> call, Throwable t){
               Log.i(LOG_TAG, t.getMessage());
           }
+
+
+
 
       });
       return service;
