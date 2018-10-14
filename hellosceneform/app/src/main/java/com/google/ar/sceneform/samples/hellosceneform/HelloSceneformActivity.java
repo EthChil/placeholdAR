@@ -49,8 +49,9 @@ public class HelloSceneformActivity extends AppCompatActivity {
   private ArFragment arFragment;
   private ModelRenderable andyRenderable;
   private ViewRenderable imgRenderable;
+  private GrabShoe shoeMaster = new GrabShoe();
+  private Shoe allShoes[] = shoeMaster.shoes;
 
-  public static final Config.PlaneFindingMode.VERTICAL;
 
 
     @Override
@@ -59,6 +60,10 @@ public class HelloSceneformActivity extends AppCompatActivity {
   // FutureReturnValueIgnored is not valid
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+
+
+
 
 
 
@@ -109,7 +114,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
             img.getScaleController().setMaxScale(2.0f);
 
             // Set the local scale of the node BEFORE setting its parent
-            img.setLocalScale(new Vector3(1f, 1f, 1f));
+            img.setLocalScale(new Vector3(0.5f, 0.5f, 0.5f));
           img.setParent(anchorNode);
           img.setRenderable(imgRenderable);
 
