@@ -303,7 +303,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
             get3DAsset(wayfair.get(itemNumber).getModel().getGlbUrl());
             Picasso.get().load(wayfair.get(this.itemNumber).getThumbnailImageUrl()).into(middleImg);
             imgText.setText(wayfair.get(itemNumber).getProducName() + "\n Price: $" + wayfair.get(itemNumber).getSalePrice());
-        } else {
+        } else if (productType == ProductType.SHOE) {
             if (shoes == null) {
                 return;
             }
@@ -326,6 +326,26 @@ public class HelloSceneformActivity extends AppCompatActivity {
 
             Log.i("FOOBAR", this.shoes.toString());
             Log.i("FOOBAR", this.shoes.get(this.itemNumber).imageLink);
+        } else {
+            if (tees == null) {
+                return;
+            }
+            imgText.setText(tees.get(itemNumber).name + "\n Price: $" + Integer.toString(tees.get(itemNumber).cost));
+            Picasso.get().load(this.tees.get(this.itemNumber).imageLink).into(middleImg);
+            ImageView view = (ImageView) getLayoutInflater().inflate(R.layout.test_view, null);
+
+            Picasso.get().load(tees.get(itemNumber).imageLink).into(view);
+
+
+            ViewRenderable.builder()
+                    .setView(arFragment.getContext(), view)
+                    .build()
+                    .thenAccept(
+                            (renderable) -> {
+                                imgRenderable = renderable;
+
+
+                            });
         }
   }
 
@@ -395,6 +415,7 @@ public class HelloSceneformActivity extends AppCompatActivity {
               }
 
               self.shoes = shoes;
+              self.tees = tees;
               self.pullIntoView();
 
 
