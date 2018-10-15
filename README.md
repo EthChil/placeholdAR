@@ -1,7 +1,7 @@
 # placeholdAR
 
 MHacks 11 submission combining wayfair API and StockX API to create an interactive shop space. Video demo:
-
+https://i.imgur.com/XLqYepY.jpg
 https://youtu.be/a0DnSlCX2Fw
 
 ## Inspiration
